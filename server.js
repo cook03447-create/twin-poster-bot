@@ -8,10 +8,13 @@ import { Resvg } from '@resvg/resvg-js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Загружаем фирменный шрифт Benzin
-const fontPath = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
+// Стало (ищет сначала в папке fonts, а если нет — прямо в корне):
+const fontInRoot = path.join(__dirname, 'Benzin-Bold.ttf');
+const fontInFolder = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
+const fontPath = fs.existsSync(fontInRoot) ? fontInRoot : fontInFolder;
 const benzinBold = fs.readFileSync(fontPath);
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8218498655:AAFSftLh_azc3rVUPfQgnBi-zARs-56G_a4";
 const PORT = process.env.PORT || 3000;
 
 const BACKGROUNDS = {
