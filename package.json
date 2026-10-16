@@ -1,0 +1,14 @@
+{
+  "name": "twin-bot-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "express": "^4.19.2",
+    "satori": "^0.10.14"
+  }
+}
