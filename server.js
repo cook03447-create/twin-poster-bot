@@ -14,7 +14,7 @@ const fontInFolder = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
 const fontPath = fs.existsSync(fontInRoot) ? fontInRoot : fontInFolder;
 const benzinBold = fs.readFileSync(fontPath);
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8218498655:AAFSftLh_azc3rVUPfQgnBi-zARs-56G_a4";
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
 const PORT = process.env.PORT || 3000;
 
 const BACKGROUNDS = {
