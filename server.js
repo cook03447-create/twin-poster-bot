@@ -7,8 +7,7 @@ import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Загружаем фирменный шрифт Benzin
-// Стало (ищет сначала в папке fonts, а если нет — прямо в корне):
+// Поиск шрифта: в корне или в папке fonts
 const fontInRoot = path.join(__dirname, 'Benzin-Bold.ttf');
 const fontInFolder = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
 const fontPath = fs.existsSync(fontInRoot) ? fontInRoot : fontInFolder;
@@ -38,7 +37,7 @@ const BACKGROUNDS = {
   }
 };
 
-// Справочник турниров и приоритетов из твоего плагина Фигмы
+// Полный реестр топ-турниров из твоего плагина Фигмы с приоритетами
 const TOURNAMENTS = [
   { id: "1970324836975847", key: "rpl", label: "🇷🇺 РПЛ", name: "Россия: Премьер-Лига", priority: 0 },
   { id: "1970324836975359", key: "epl", label: "🏴 АПЛ", name: "Англия: Премьер-Лига", priority: 1 },
@@ -48,22 +47,34 @@ const TOURNAMENTS = [
   { id: "1970324836978008", key: "italy-serie-a", label: "🇮🇹 Серия А", name: "Италия: Серия А", priority: 5 },
   { id: "1970324836980123", key: "ucl", label: "🏆 ЛЧ", name: "Лига Чемпионов УЕФА", priority: 6 },
   { id: "1970324836980121", key: "uel", label: "🏆 ЛЕ", name: "Лига Европы УЕФА", priority: 7 },
-  { id: "1970324836991678", key: "uecl", label: "🏆 ЛК", name: "Лига Конференций УЕФА", priority: 8 }
+  { id: "1970324836991678", key: "uecl", label: "🏆 ЛК", name: "Лига Конференций УЕФА", priority: 8 },
+  { id: "1970324836975098", key: "kpl", label: "🇰🇿 КПЛ", name: "Казахстан: Премьер-Лига", priority: 9 },
+  { id: "1970324836979695", key: "cup-russia", label: "🇷🇺 Кубок России", name: "Россия: Кубок", priority: 10 },
+  { id: "1970324836975366", key: "cup-england", label: "🏴 Кубок Англии", name: "Англия: Кубок (FA Cup)", priority: 11 },
+  { id: "1970324836975690", key: "cup-spain", label: "🇪🇸 Кубок Испании", name: "Испания: Кубок (Copa del Rey)", priority: 12 },
+  { id: "1970324836975652", key: "cup-germany", label: "🇩🇪 Кубок Германии", name: "Германия: Кубок (DFB-Pokal)", priority: 13 },
+  { id: "1970324836978108", key: "cup-italy", label: "🇮🇹 Кубок Италии", name: "Италия: Кубок (Coppa Italia)", priority: 14 },
+  { id: "1970324836975605", key: "primeira-liga", label: "🇵🇹 Примейра Лига", name: "Португалия: Примейра Лига", priority: 15 },
+  { id: "1970324836975624", key: "super-lig-turkey", label: "🇹🇷 Суперлига", name: "Турция: Суперлига", priority: 16 },
+  { id: "1970324836986742", key: "uefa-nations-league", label: "🏆 Лига Наций", name: "Лига Наций УЕФА", priority: 17 }
 ];
 
-// Твоя база логотипов из плагина Фигмы
+// Полная база логотипов из твоего плагина Фигмы (с актуальным Акроном 2023, Ливерпулем, ПСЖ)
 const LOGO_MAP = {
+  // ЕВРОКУБКИ
   "сабах баку": "Sabah_FC_(Azerbaijan).png", "сабах": "Sabah_FC_(Azerbaijan).png",
-  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "буде-глимт": "FK_Bodø-Glimt_Logo.svg",
-  "буде глимт": "FK_Bodø-Glimt_Logo.svg", "нек": "NEC_Nijmegen_logo.svg",
-  "ласк": "LASK-Logo_2023.svg", "селтик": "Celtic_FC_crest.svg",
-  "аек афины": "AEK_Athens_FC_logo.svg", "аек": "AEK_Athens_FC_logo.svg",
-  "викинг": "Viking_FK_logo.svg", "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg",
-  "слован братислава": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
+  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "хапоэль беэр шева": "Hapoel_Beer_Sheva.png",
+  "буде-глимт": "Bodo-Glimt.png", "буде глимт": "FK_Bodø-Glimt_Logo.svg",
+  "нек": "NEC_Nijmegen_logo.svg", "ласк": "LASK-Logo_2023.svg",
+  "селтик": "Celtic_FC_crest.svg", "аек афины": "AEK_Athens_FC_logo.svg",
+  "аек": "AEK_Athens_FC_logo.svg", "викинг": "Viking_FK_logo.svg",
+  "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg", "слован братислава": "SK_Slovan_Bratislava_logo.svg",
+  "слован": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
   "янг бойз": "BSC_Young_Boys_logo.svg", "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
   "зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "спарта прага": "AC_Sparta_Prague_logo.svg",
-  "мальме": "Malmö_FF_logo.svg", "црвена звезда": "FK_Crvena_zvezda_logo.svg",
-  "бешикташ": "Besiktas_JK.svg", "орхус": "Aarhus_Gymnastikforening_logo.svg",
+  "спарта": "AC_Sparta_Prague_logo.svg", "мальме": "Malmö_FF_logo.svg",
+  "црвена звезда": "FK_Crvena_zvezda_logo.svg", "бешикташ": "Besiktas_JK.svg",
+  "орхус": "Aarhus_Gymnastikforening_logo.svg", "бенфика": "SL_Benfica_logo.svg",
   "лех познань": "Lech_Poznań_logo.svg", "лех": "Lech_Poznań_logo.svg",
   "андерлехт": "RSC_Anderlecht_logo.svg", "трабзонспор": "Trabzonspor_Amblemi.svg",
   "рапид вена": "SK_Rapid_Wien_logo.svg", "купс": "KuPS_logo.svg",
@@ -71,31 +82,62 @@ const LOGO_MAP = {
   "копенгаген": "FC_København_logo.svg", "аякс": "AFC_Ajax_logo.svg",
   "брага": "SC_Braga_logo.svg", "гент": "KAA_Gent_logo.svg",
   "крайова": "CS_Universitatea_Craiova_logo.svg", "хетафе": "Getafe_CF_logo.svg",
+
+  // РПЛ (с актуальным Акроном 2023 и Зенитом 2023)
   "акрон": "FC_Akron_Logo_2023.svg", "родина": "FC_Rodina_Logo.svg",
-  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "зенит": "FC_Zenit_logo_2023.svg",
-  "спартак москва": "FC_Spartak_Moscow_Logo.svg", "спартак": "FC_Spartak_Moscow_Logo.svg",
-  "цска москва": "FC_CSKA_Moscow_Logo.svg", "цска": "FC_CSKA_Moscow_Logo.svg",
-  "краснодар": "FC_Krasnodar_Logo.svg", "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg",
-  "локомотив": "FC_Lokomotiv_Moscow_Logo.svg", "динамо москва": "FC_Dynamo_Moscow_Logo.svg",
-  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg", "оренбург": "FC_Orenburg_logo.svg",
-  "ахмат": "FC_Akhmat_Grozny_Logo.svg", "рубин": "FC_Rubin_Kazan_logo.svg",
-  "крылья советов": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
+  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "махачкала": "FC_Dynamo_Makhachkala_Logo.svg",
+  "зенит": "FC_Zenit_logo_2023.svg", "спартак москва": "FC_Spartak_Moscow_Logo.svg",
+  "спартак": "FC_Spartak_Moscow_Logo.svg", "цска москва": "FC_CSKA_Moscow_Logo.svg",
+  "цска": "FC_CSKA_Moscow_Logo.svg", "краснодар": "FC_Krasnodar_Logo.svg",
+  "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg", "локомотив": "FC_Lokomotiv_Moscow_Logo.svg",
+  "динамо москва": "FC_Dynamo_Moscow_Logo.svg", "динамо м": "FC_Dynamo_Moscow_Logo.svg",
+  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg",
+  "оренбург": "FC_Orenburg_logo.svg", "ахмат": "FC_Akhmat_Grozny_Logo.svg",
+  "рубин": "FC_Rubin_Kazan_logo.svg", "крылья советов": "FC_Krylia_Sovetov_Logo.svg",
+  "крылья": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
+  "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg", "нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg",
   "химки": "FC_Khimki_Logo.svg", "балтика": "FC_Baltika_Kaliningrad_logo.png",
-  "псж": "Paris_Saint-Germain_F.C..svg", "марсель": "Olympique_de_Marseille_logo.svg",
-  "монако": "AS_Monaco_FC_logo.svg", "лион": "Olympique_Lyonnais_logo.svg",
+  "сочи": "PFC_Sochi_logo.png", "урал": "FC_Ural_Sverdlovsk_Oblast_Logo.svg",
+
+  // ФРАНЦИЯ (ПСЖ)
+  "псж": "Paris_Saint-Germain_F.C..svg", "psg": "Paris_Saint-Germain_F.C..svg",
+  "пари сен-жермен": "Paris_Saint-Germain_F.C..svg", "пари сен жермен": "Paris_Saint-Germain_F.C..svg",
+  "марсель": "Olympique_de_Marseille_logo.svg", "монако": "AS_Monaco_FC_logo.svg",
+  "лион": "Olympique_Lyonnais_logo.svg", "лилль": "Lille_OSC_2018_logo.svg",
+  "ницца": "OGC_Nice_logo.svg", "ланс": "RC_Lens_logo.svg", "ренн": "Stade_Rennais_FC.svg",
+
+  // АНГЛИЯ (Ливерпуль)
   "арсенал": "Arsenal_FC.svg", "челси": "FC_Chelsea_Logo.svg",
-  "ливерпуль": "FC_Liverpool_Logo.svg", "манчестер сити": "Manchester_City_FC.svg",
-  "ман сити": "Manchester_City_FC.svg", "манчестер юнайтед": "Manchester_United_FC_crest.svg",
-  "тоттенхэм": "Tottenham_Hotspur.svg", "астон вилла": "Aston_Villa_FC_new_crest.svg",
-  "борнмут": "AFC_Bournemouth_%282013%29.svg", "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
-  "ноттингем": "Nottingham_Forest_logo.svg", "реал мадрид": "FC_Real_Madrid_Logo.svg",
-  "барселона": "FC_Barcelona.svg", "атлетико": "FC_Atletico_Madrid_Logo.svg",
+  "ливерпуль": "FC_Liverpool_Logo.svg", "liverpool": "FC_Liverpool_Logo.svg",
+  "манчестер сити": "Manchester_City_FC.svg", "ман сити": "Manchester_City_FC.svg",
+  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "ман юнайтед": "Manchester_United_FC_crest.svg",
+  "тоттенхэм": "Tottenham_Hotspur.svg", "тоттенхэм хотспур": "Tottenham_Hotspur.svg",
+  "астон вилла": "Aston_Villa_FC_new_crest.svg", "ньюкасл": "Newcastle_United_Logo.svg",
+  "брайтон": "Brighton_%26_Hove_Albion_logo.png", "борнмут": "AFC_Bournemouth_%282013%29.svg",
+  "вест хэм": "West_Ham_United_FC_logo.svg", "фулхэм": "Fulham_FC_%28shield%29.svg",
+  "брентфорд": "Brentford_FC_crest.svg", "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
+  "вулверхэмптон": "Wolverhampton_Wanderers.svg", "эвертон": "Everton_FC_logo.svg",
+  "ноттингем": "Nottingham_Forest_logo.svg",
+
+  // ИСПАНИЯ
+  "реал мадрид": "FC_Real_Madrid_Logo.svg", "барселона": "FC_Barcelona.svg",
+  "атлетико": "FC_Atletico_Madrid_Logo.svg", "атлетик": "Athletic_Bilbao_logo.svg",
+  "севилья": "Sevilla_FC_logo.svg", "валенсия": "Valencia_cf.svg",
   "вильярреал": "FC_Villarreal_Logo.svg", "реал сосьедад": "Real_Sociedad_logo.svg",
+  "бетис": "Real_betis_logo.svg", "жирона": "Girona_FC_logo.svg",
+
+  // ИТАЛИЯ
   "интер": "FC_Internazionale_Milano_2021.svg", "милан": "Logo_of_AC_Milan.svg",
   "ювентус": "Juventus_FC_2017_logo.svg", "наполи": "SSC_Napoli_2025_(white_and_azure).svg",
-  "рома": "AS_Roma_logo_%282017%29.svg", "аталанта": "Atalanta_BC.svg",
+  "рома": "AS_Roma_logo_%282017%29.svg", "лацио": "SS_Lazio_badge.svg",
+  "аталанта": "Atalanta_BC.svg", "фиорентина": "ACF_Fiorentina_2022.svg",
+  "болонья": "Bologna_FC_1909_logo.svg", "комо": "Como_1907_logo.svg",
+
+  // ГЕРМАНИЯ
   "бавария": "FC_Bayern_München_logo_%282017%29.svg", "боруссия дортмунд": "Borussia_Dortmund_logo.svg",
-  "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg"
+  "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg",
+  "айнтрахт": "Eintracht_Frankfurt_Logo.svg", "штутгарт": "VfB_Stuttgart_1893_Logo.svg",
+  "фрайбург": "SC_Freiburg_logo.svg", "шальке": "FC_Schalke_04_Logo.svg"
 };
 
 const bgMemoryCache = new Map();
@@ -116,12 +158,10 @@ function h(type, props = {}, ...children) {
 const app = express();
 app.use(express.json());
 
-// Проверка здоровья сервера
 app.get('/', (req, res) => res.send('Twin Poster Bot is running! 🚀'));
 
-// Вебхук от Telegram
 app.post('/webhook', async (req, res) => {
-  res.status(200).send('OK'); // Сразу подтверждаем Телеграму
+  res.status(200).send('OK');
 
   const update = req.body;
   if (!update) return;
@@ -157,15 +197,15 @@ async function handlePosterGeneration(token, chatId, tourKey) {
       return;
     }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы из базы...`);
 
     const top4 = result.matches.slice(0, 4);
 
-    // Моментальная загрузка логотипов
+    // Загрузка логотипов: СНАЧАЛА база плагина (Википедия), затем сайт БК
     await Promise.all(top4.map(async m => {
       const [l1, l2] = await Promise.all([
-        getLogoFast(m.team1, m.fallback1),
-        getLogoFast(m.team2, m.fallback2)
+        getLogoWithPriority(m.team1, m.fallback1),
+        getLogoWithPriority(m.team2, m.fallback2)
       ]);
       m.logo1 = l1;
       m.logo2 = l2;
@@ -202,14 +242,12 @@ async function handlePosterGeneration(token, chatId, tourKey) {
       )
     );
 
-    // Векторный рендер через Satori
     const svg = await satori(layout, {
       width: 1280,
       height: 1280,
       fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
     });
 
-    // Нативный C++ / Rust рендер через @resvg/resvg-js (молниеносно)
     const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
     const pngBuffer = resvg.render().asPng();
 
@@ -287,7 +325,7 @@ function renderTwinMatchCard(m) {
       )
     ),
 
-    // Нижняя белая плашка кэфов
+    // Нижняя белая плашка кэфов (компактная)
     h('div', {
       style: {
         display: 'flex',
@@ -312,7 +350,7 @@ function renderTwinMatchCard(m) {
   );
 }
 
-// Загрузка матчей по точной логике твоего плагина Фигмы
+// Загрузка матчей: строгая фильтрация по белому списку TOURNAMENTS (как в плагине)
 async function loadMatchesFromLine(targetTourKey) {
   const targetTournament = TOURNAMENTS.find(t => t.key === targetTourKey);
   const targetId = targetTournament?.id;
@@ -348,21 +386,22 @@ async function loadMatchesFromLine(targetTourKey) {
     const t2 = ev.competitors[1].name;
     if (!t1 || !t2) continue;
 
-    // Отсекаем виртуальный спорт и симуляторы (как в плагине)
+    // Исключаем виртуальный спорт и SRL
     if (ev?.league?.virtual === true || ev?.sport?.virtual === true) continue;
     if (/\bsrl\b/i.test(t1) || /\bsrl\b/i.test(t2)) continue;
 
-    // Фильтр для турниров
+    // Исключаем американский/австралийский футбол и регби
+    const sportName = (ev.league?.sport?.name || ev.sport?.name || '').toLowerCase();
+    if (sportName.includes('америк') || sportName.includes('австрал') || sportName.includes('регби')) continue;
+
+    // Определение турнира строго по базе плагина
     const matchedTour = getTournamentFromEvent(ev);
+
     if (targetTourKey !== 'games') {
       if (!matchedTour || matchedTour.key !== targetTourKey) continue;
     } else {
-      // Для "Матчей дня" проверяем, что это реальный футбол
-      const sportName = (ev.league?.sport?.name || ev.sport?.name || '').toLowerCase();
-      const sportUrl = (ev.league?.sport?.url || '').toLowerCase();
-      const urlText = (ev.url || ev.urlv2 || '').toLowerCase();
-      const isSoccer = urlText.includes('/soccer/') || sportUrl === 'soccer' || sportName.includes('футбол');
-      if (!isSoccer) continue;
+      // Для "Матчей дня" берем ТОЛЬКО официальные турниры из белого списка TOURNAMENTS!
+      if (!matchedTour) continue;
     }
 
     let rawTime = ev.kickoff || ev.startTime || ev.date || Date.now();
@@ -370,7 +409,6 @@ async function loadMatchesFromLine(targetTourKey) {
     const d = new Date(rawTime);
     const timeStr = d.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit' });
 
-    // Поиск коэффициентов 1X2
     let p1 = '1.85', x = '3.50', p2 = '4.20';
     let hasResult = false;
 
@@ -402,7 +440,7 @@ async function loadMatchesFromLine(targetTourKey) {
     });
   }
 
-  // Сортировка по приоритету лиги и времени матча
+  // Сортируем: сначала самые статусные лиги, затем по времени
   list.sort((a, b) => a.priority !== b.priority ? a.priority - b.priority : a.timestamp - b.timestamp);
 
   return { matches: list, debug: `Найдено в линии: ${list.length}` };
@@ -425,11 +463,18 @@ function getTournamentFromEvent(event) {
   }
 
   const leagueName = String(event?.league?.name || "").trim().toLowerCase();
-  if (/^(?:россия:\s*)?премьер-?лига$/i.test(leagueName)) return TOURNAMENTS.find(t => t.key === "rpl") || null;
-  if (/^(?:испания:\s*)?(?:ла\s*лига|laliga)$/i.test(leagueName)) return TOURNAMENTS.find(t => t.key === "laliga") || null;
-  if (/^(?:англия:\s*)?премьер-?лига$/i.test(leagueName)) return TOURNAMENTS.find(t => t.key === "epl") || null;
-  if (/^(?:италия:\s*)?italy-serie-a$/i.test(leagueName)) return TOURNAMENTS.find(t => t.key === "italy-serie-a") || null;
-  if (/^(?:германия:\s*)?бундеслига$/i.test(leagueName)) return TOURNAMENTS.find(t => t.key === "bundesliga") || null;
+  const urlText = candidates.join(" ");
+
+  if (/^(?:россия:\s*)?премьер-?лига$/i.test(leagueName) || (/\/russia\//i.test(urlText) && /\/premier-league(?:\/|$)/i.test(urlText))) return TOURNAMENTS.find(t => t.key === "rpl") || null;
+  if (/^(?:испания:\s*)?(?:ла\s*лига|laliga)$/i.test(leagueName) || /\/laliga(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "laliga") || null;
+  if (/^(?:англия:\s*)?премьер-?лига$/i.test(leagueName) || (/\/england\//i.test(urlText) && /\/premier-league(?:\/|$)/i.test(urlText))) return TOURNAMENTS.find(t => t.key === "epl") || null;
+  if (/^(?:франция:\s*)?лига\s*1$/i.test(leagueName) || /\/ligue-1(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "ligue1") || null;
+  if (/^(?:германия:\s*)?бундеслига$/i.test(leagueName) || /\/bundesliga(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "bundesliga") || null;
+  if (/^(?:италия:\s*)?italy-serie-a$/i.test(leagueName) || /\/serie-a(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "italy-serie-a") || null;
+  if (/\/uefa-champions-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "ucl") || null;
+  if (/\/uefa-europa-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uel") || null;
+  if (/\/uefa-europa-conference-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uecl") || null;
+  if (/\/uefa-nations-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uefa-nations-league") || null;
 
   return null;
 }
@@ -449,11 +494,51 @@ async function getCachedBg(url) {
   }
 }
 
-async function getLogoFast(teamName, bookmakerLogoUrl) {
-  const cacheKey = String(bookmakerLogoUrl || teamName).toLowerCase().trim();
+// Загрузка логотипов с приоритетом: 1. База плагина (LOGO_MAP) -> 2. Сайт БК
+async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
+  const cacheKey = String(teamName).toLowerCase().trim();
   if (logoMemoryCache.has(cacheKey)) return logoMemoryCache.get(cacheKey);
 
-  // 1. Быстрый логотип с CDN букмекера (50ms)
+  // Очистка названия от приставок (как в твоем плагине Фигмы)
+  const raw = cacheKey.replace(/ё/g, 'е');
+  const clean = raw.replace(/(хк|hc|фк|пфк|fc|pfc|cf|cd|ud|rcd|sd|us|as|ssc|ac)\b/gi, '').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // 1. ПРИОРИТЕТ: Ищем в базе LOGO_MAP из твоего плагина (обновленные актуальные гербы)
+  let fileName = null;
+  for (const key in LOGO_MAP) {
+    const k = key.toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (clean === k) {
+      fileName = LOGO_MAP[key];
+      break;
+    }
+  }
+
+  if (!fileName) {
+    for (const key in LOGO_MAP) {
+      const k = key.toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (clean.includes(k) || k.includes(clean)) {
+        fileName = LOGO_MAP[key];
+        break;
+      }
+    }
+  }
+
+  if (fileName) {
+    try {
+      const directWikiThumb = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(fileName)}?width=160`;
+      const wRes = await fetch(directWikiThumb, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0' }
+      });
+      if (wRes.ok) {
+        const buf = await wRes.arrayBuffer();
+        const dataUrl = `data:image/png;base64,${Buffer.from(buf).toString('base64')}`;
+        logoMemoryCache.set(cacheKey, dataUrl);
+        return dataUrl;
+      }
+    } catch (e) {}
+  }
+
+  // 2. ЗАПАСНОЙ ВАРИАНТ: Логотип букмекера (если в базе LOGO_MAP клуба нет)
   if (bookmakerLogoUrl) {
     try {
       let finalFbUrl = bookmakerLogoUrl.startsWith('/') ? `https://4278.info${bookmakerLogoUrl}` : bookmakerLogoUrl;
@@ -468,34 +553,6 @@ async function getLogoFast(teamName, bookmakerLogoUrl) {
       }
     } catch (e) {}
   }
-
-  // 2. База логотипов (Википедия)
-  try {
-    const raw = String(teamName).toLowerCase().replace(/ё/g, 'е');
-    const clean = raw.replace(/(фк|fc|pfc|cf)\b/gi, '').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-
-    let fileName = null;
-    for (const key in LOGO_MAP) {
-      const k = key.toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-      if (clean === k || clean.includes(k) || k.includes(clean)) {
-        fileName = LOGO_MAP[key];
-        break;
-      }
-    }
-
-    if (fileName) {
-      const directWikiThumb = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(fileName)}?width=120`;
-      const wRes = await fetch(directWikiThumb, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0' }
-      });
-      if (wRes.ok) {
-        const buf = await wRes.arrayBuffer();
-        const dataUrl = `data:image/png;base64,${Buffer.from(buf).toString('base64')}`;
-        logoMemoryCache.set(cacheKey, dataUrl);
-        return dataUrl;
-      }
-    }
-  } catch (e) {}
 
   return null;
 }
