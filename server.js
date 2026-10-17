@@ -16,6 +16,7 @@ const benzinBold = fs.readFileSync(fontPath);
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
 const PORT = process.env.PORT || 3000;
 
+// Все твои 12 подложек
 const BACKGROUNDS = {
   twin: {
     uel: 'https://i.postimg.cc/brWTqPVn/ueltwin.jpg',
@@ -37,29 +38,37 @@ const BACKGROUNDS = {
   }
 };
 
-// Белый список ТОП-турниров
 const TOURNAMENTS = [
-  { id: "1970324836975847", key: "rpl", label: "🇷🇺 РПЛ", name: "Россия: Премьер-Лига", priority: 0 },
-  { id: "1970324836975359", key: "epl", label: "🏴 АПЛ", name: "Англия: Премьер-Лига", priority: 1 },
-  { id: "1970324836975689", key: "laliga", label: "🇪🇸 Ла Лига", name: "Испания: Ла Лига", priority: 2 },
-  { id: "1970324836975721", key: "ligue1", label: "🇫🇷 Лига 1", name: "Франция: Лига 1", priority: 3 },
-  { id: "1970324836975649", key: "bundesliga", label: "🇩🇪 Бундеслига", name: "Германия: Бундеслига", priority: 4 },
-  { id: "1970324836978008", key: "italy-serie-a", label: "🇮🇹 Серия А", name: "Италия: Серия А", priority: 5 },
-  { id: "1970324836980123", key: "ucl", label: "🏆 ЛЧ", name: "Лига Чемпионов УЕФА", priority: 6 },
-  { id: "1970324836980121", key: "uel", label: "🏆 ЛЕ", name: "Лига Европы УЕФА", priority: 7 },
-  { id: "1970324836991678", key: "uecl", label: "🏆 ЛК", name: "Лига Конференций УЕФА", priority: 8 },
-  { id: "1970324836986742", key: "uefa-nations-league", label: "🏆 Лига Наций", name: "Лига Наций УЕФА", priority: 9 }
+  { id: "1970324836975847", key: "rpl", label: "🇷🇺 РПЛ", priority: 0 },
+  { id: "1970324836975359", key: "epl", label: "🏴 АПЛ", priority: 1 },
+  { id: "1970324836975689", key: "laliga", label: "🇪🇸 Ла Лига", priority: 2 },
+  { id: "1970324836975721", key: "ligue1", label: "🇫🇷 Лига 1", priority: 3 },
+  { id: "1970324836975649", key: "bundesliga", label: "🇩🇪 Бундеслига", priority: 4 },
+  { id: "1970324836978008", key: "italy-serie-a", label: "🇮🇹 Серия А", priority: 5 },
+  { id: "1970324836980123", key: "ucl", label: "🏆 ЛЧ", priority: 6 },
+  { id: "1970324836980121", key: "uel", label: "🏆 ЛЕ", priority: 7 },
+  { id: "1970324836991678", key: "uecl", label: "🏆 ЛК", priority: 8 }
 ];
 
-// База логотипов из плагина Фигмы
+// Топ-5 чемпионатов Европы (без РПЛ) для "Матчей дня"
+const TOP_EUROPE_LEAGUES = [
+  { id: "1970324836975359", name: "epl" },
+  { id: "1970324836975689", name: "laliga" },
+  { id: "1970324836978008", name: "italy-serie-a" },
+  { id: "1970324836975649", name: "bundesliga" },
+  { id: "1970324836975721", name: "ligue1" }
+];
+
 const LOGO_MAP = {
+  // ЕВРОКУБКИ
   "сабах баку": "Sabah_FC_(Azerbaijan).png", "сабах": "Sabah_FC_(Azerbaijan).png",
-  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "буде-глимт": "FK_Bodø-Glimt_Logo.svg",
-  "буде глимт": "FK_Bodø-Glimt_Logo.svg", "нек": "NEC_Nijmegen_logo.svg",
-  "ласк": "LASK-Logo_2023.svg", "селтик": "Celtic_FC_crest.svg",
-  "аек афины": "AEK_Athens_FC_logo.svg", "аек": "AEK_Athens_FC_logo.svg",
-  "викинг": "Viking_FK_logo.svg", "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg",
-  "слован братислава": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
+  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "хапоэль беэр шева": "Hapoel_Beer_Sheva.png",
+  "буде-глимт": "Bodo-Glimt.png", "буде глимт": "FK_Bodø-Glimt_Logo.svg",
+  "нек": "NEC_Nijmegen_logo.svg", "ласк": "LASK-Logo_2023.svg",
+  "селтик": "Celtic_FC_crest.svg", "аек афины": "AEK_Athens_FC_logo.svg",
+  "аек": "AEK_Athens_FC_logo.svg", "викинг": "Viking_FK_logo.svg",
+  "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg", "слован братислава": "SK_Slovan_Bratislava_logo.svg",
+  "слован": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
   "янг бойз": "BSC_Young_Boys_logo.svg", "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
   "зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "спарта прага": "AC_Sparta_Prague_logo.svg",
   "мальме": "Malmö_FF_logo.svg", "црвена звезда": "FK_Crvena_zvezda_logo.svg",
@@ -74,40 +83,53 @@ const LOGO_MAP = {
 
   // РПЛ (Акрон 2023, Зенит 2023 и др.)
   "акрон": "FC_Akron_Logo_2023.svg", "родина": "FC_Rodina_Logo.svg",
-  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "зенит": "FC_Zenit_logo_2023.svg",
-  "спартак москва": "FC_Spartak_Moscow_Logo.svg", "спартак": "FC_Spartak_Moscow_Logo.svg",
-  "цска москва": "FC_CSKA_Moscow_Logo.svg", "цска": "FC_CSKA_Moscow_Logo.svg",
-  "краснодар": "FC_Krasnodar_Logo.svg", "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg",
-  "локомотив": "FC_Lokomotiv_Moscow_Logo.svg", "динамо москва": "FC_Dynamo_Moscow_Logo.svg",
-  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg", "оренбург": "FC_Orenburg_logo.svg",
-  "ахмат": "FC_Akhmat_Grozny_Logo.svg", "рубин": "FC_Rubin_Kazan_logo.svg",
-  "крылья советов": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
+  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "махачкала": "FC_Dynamo_Makhachkala_Logo.svg",
+  "зенит": "FC_Zenit_logo_2023.svg", "спартак москва": "FC_Spartak_Moscow_Logo.svg",
+  "спартак": "FC_Spartak_Moscow_Logo.svg", "цска москва": "FC_CSKA_Moscow_Logo.svg",
+  "цска": "FC_CSKA_Moscow_Logo.svg", "краснодар": "FC_Krasnodar_Logo.svg",
+  "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg", "локомотив": "FC_Lokomotiv_Moscow_Logo.svg",
+  "динамо москва": "FC_Dynamo_Moscow_Logo.svg", "динамо м": "FC_Dynamo_Moscow_Logo.svg",
+  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg",
+  "оренбург": "FC_Orenburg_logo.svg", "ахмат": "FC_Akhmat_Grozny_Logo.svg",
+  "рубин": "FC_Rubin_Kazan_logo.svg", "крылья советов": "FC_Krylia_Sovetov_Logo.svg",
+  "крылья": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
   "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg", "химки": "FC_Khimki_Logo.svg",
   "балтика": "FC_Baltika_Kaliningrad_logo.png",
 
-  // ТОП ЕВРОПА
+  // ФРАНЦИЯ (ПСЖ)
   "псж": "Paris_Saint-Germain_F.C..svg", "psg": "Paris_Saint-Germain_F.C..svg",
+  "пари сен-жермен": "Paris_Saint-Germain_F.C..svg", "пари сен жермен": "Paris_Saint-Germain_F.C..svg",
   "марсель": "Olympique_de_Marseille_logo.svg", "монако": "AS_Monaco_FC_logo.svg",
   "лион": "Olympique_Lyonnais_logo.svg", "лилль": "Lille_OSC_2018_logo.svg",
+  "ницца": "OGC_Nice_logo.svg", "ланс": "RC_Lens_logo.svg", "ренн": "Stade_Rennais_FC.svg",
+
+  // АНГЛИЯ (Ливерпуль)
   "арсенал": "Arsenal_FC.svg", "челси": "FC_Chelsea_Logo.svg",
   "ливерпуль": "FC_Liverpool_Logo.svg", "liverpool": "FC_Liverpool_Logo.svg",
   "манчестер сити": "Manchester_City_FC.svg", "ман сити": "Manchester_City_FC.svg",
   "манчестер юнайтед": "Manchester_United_FC_crest.svg", "ман юнайтед": "Manchester_United_FC_crest.svg",
   "тоттенхэм": "Tottenham_Hotspur.svg", "астон вилла": "Aston_Villa_FC_new_crest.svg",
   "ньюкасл": "Newcastle_United_Logo.svg", "борнмут": "AFC_Bournemouth_%282013%29.svg",
-  "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
+  "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg", "ноттингем": "Nottingham_Forest_logo.svg",
+
+  // ИСПАНИЯ
   "реал мадрид": "FC_Real_Madrid_Logo.svg", "барселона": "FC_Barcelona.svg",
   "атлетико": "FC_Atletico_Madrid_Logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
   "реал сосьедад": "Real_Sociedad_logo.svg", "севилья": "Sevilla_FC_logo.svg",
+
+  // ИТАЛИЯ
   "интер": "FC_Internazionale_Milano_2021.svg", "милан": "Logo_of_AC_Milan.svg",
   "ювентус": "Juventus_FC_2017_logo.svg", "наполи": "SSC_Napoli_2025_(white_and_azure).svg",
   "рома": "AS_Roma_logo_%282017%29.svg", "аталанта": "Atalanta_BC.svg",
+
+  // ГЕРМАНИЯ
   "бавария": "FC_Bayern_München_logo_%282017%29.svg", "боруссия дортмунд": "Borussia_Dortmund_logo.svg",
   "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg"
 };
 
 const bgMemoryCache = new Map();
 const logoMemoryCache = new Map();
+const userBrands = new Map(); // Хранит выбранный бренд для каждого пользователя (twin / leon / slott)
 
 function h(type, props = {}, ...children) {
   const p = props || {};
@@ -124,7 +146,7 @@ function h(type, props = {}, ...children) {
 const app = express();
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('Twin Poster Bot is running! 🚀'));
+app.get('/', (req, res) => res.send('Twin / Leon / Slott Poster Bot is alive! 🚀'));
 
 app.post('/webhook', async (req, res) => {
   res.status(200).send('OK');
@@ -133,41 +155,186 @@ app.post('/webhook', async (req, res) => {
   if (!update) return;
 
   try {
+    // 1. Нажатие на кнопку
     if (update.callback_query) {
       const query = update.callback_query;
       const chatId = query.message.chat.id;
-      const tourKey = query.data.replace('twin_', '');
+      const data = query.data;
 
       await answerCallback(TELEGRAM_BOT_TOKEN, query.id);
-      handlePosterGeneration(TELEGRAM_BOT_TOKEN, chatId, tourKey).catch(console.error);
-    } else if (update.message && update.message.chat) {
+
+      // Смена бренда
+      if (data.startsWith('setbrand_')) {
+        const brand = data.replace('setbrand_', '');
+        userBrands.set(chatId, brand);
+        await sendTournamentMenu(TELEGRAM_BOT_TOKEN, chatId, brand);
+        return;
+      }
+
+      // Генерация турнира
+      const [brand, tourKey] = data.split('_');
+      handleTournamentGeneration(TELEGRAM_BOT_TOKEN, chatId, brand || 'twin', tourKey).catch(console.error);
+    } 
+    // 2. Текстовое сообщение
+    else if (update.message && update.message.chat) {
       const chatId = update.message.chat.id;
-      sendMainMenu(TELEGRAM_BOT_TOKEN, chatId).catch(console.error);
+      const text = (update.message.text || '').trim();
+
+      if (text === '/start') {
+        await sendBrandSelection(TELEGRAM_BOT_TOKEN, chatId);
+      } else {
+        // Пользователь прислал список матчей текстом!
+        const currentBrand = userBrands.get(chatId) || 'twin';
+        handleCustomTextMatches(TELEGRAM_BOT_TOKEN, chatId, currentBrand, text).catch(console.error);
+      }
     }
   } catch (err) {
     console.error('Webhook error:', err);
   }
 });
 
-async function handlePosterGeneration(token, chatId, tourKey) {
+// Меню выбора бренда
+async function sendBrandSelection(token, chatId) {
+  const keyboard = {
+    inline_keyboard: [
+      [
+        { text: '🔷 Twin', callback_data: 'setbrand_twin' },
+        { text: '🦁 Leon', callback_data: 'setbrand_leon' },
+        { text: '🎰 Slott', callback_data: 'setbrand_slott' }
+      ]
+    ]
+  };
+
+  await sendMessage(token, chatId, '👋 Выберите бренд для генерации постеров:', keyboard);
+}
+
+// Меню турниров для выбранного бренда
+async function sendTournamentMenu(token, chatId, brand) {
+  const brandTitle = brand.toUpperCase();
+  let buttons = [];
+
+  if (brand === 'slott') {
+    buttons = [
+      [{ text: `⚽️ Матчи дня (${brandTitle})`, callback_data: `${brand}_games` }]
+    ];
+  } else {
+    buttons = [
+      [
+        { text: `🟠 Лига Европы`, callback_data: `${brand}_uel` },
+        { text: `🟢 Лига Конференций`, callback_data: `${brand}_uecl` }
+      ],
+      [
+        { text: `⭐️ Лига Чемпионов`, callback_data: `${brand}_ucl` },
+        { text: `🇷🇺 РПЛ (Тур)`, callback_data: `${brand}_rpl` }
+      ],
+      [
+        { text: `⚽️ Матчи дня (Топ Европы)`, callback_data: `${brand}_games` }
+      ]
+    ];
+  }
+
+  const text = `🏆 Выбран бренд: *${brandTitle}*\n\nВыберите турнир или *просто пришлите список матчей текстом* (до 4 шт.), например:\n\nЛиверпуль - Челси\nРеал Мадрид - Барселона\nИнтер - Милан\nБавария - Боруссия`;
+  await sendMessage(token, chatId, text, { inline_keyboard: buttons });
+}
+
+// Генерация по кнопкам
+async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   let statusMsgId = null;
 
   try {
-    const initRes = await sendMessage(token, chatId, `⏳ [1/4] Подключаюсь к линии...`);
+    const initRes = await sendMessage(token, chatId, `⏳ [1/4] Запрашиваю матчи из линии...`);
     statusMsgId = initRes?.result?.message_id;
 
-    const result = await loadMatchesFromLine(tourKey);
+    const matches = await fetchTournamentMatches(tourKey);
 
-    if (!result.matches || result.matches.length === 0) {
-      await notifyUser(token, chatId, statusMsgId, `⚠️ На сегодня в выбранном турнире нет матчей в линии.\n\nПопробуйте «🇷🇺 РПЛ (Twin)» или «⚽️ Любые матчи дня (Twin)»!`);
+    if (!matches || matches.length === 0) {
+      await notifyUser(token, chatId, statusMsgId, `⚠️ На сегодня в выбранном турнире нет матчей в линии.\n\nПопробуйте «РПЛ» или пришлите матчи текстом!`);
       return;
     }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы из базы...`);
+    // ЛОГИКА РАЗБИВКИ НА КАРТИНКИ:
+    // Для РПЛ и ЛЧ: если матчей > 4, делим на 2 картинки (по 4 матча на субботу/воскресенье)
+    let chunks = [];
+    if ((tourKey === 'rpl' || tourKey === 'ucl') && matches.length > 4) {
+      chunks = [matches.slice(0, 4), matches.slice(4, 8)];
+    } else {
+      chunks = [matches.slice(0, 4)];
+    }
 
-    const top4 = result.matches.slice(0, 4);
+    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы (картинок: ${chunks.length})...`);
 
-    await Promise.all(top4.map(async m => {
+    // Рендерим каждую картинку
+    for (let i = 0; i < chunks.length; i++) {
+      const matchChunk = chunks[i];
+
+      // Скачиваем логотипы
+      await Promise.all(matchChunk.map(async m => {
+        const [l1, l2] = await Promise.all([
+          getLogoWithPriority(m.team1, m.fallback1),
+          getLogoWithPriority(m.team2, m.fallback2)
+        ]);
+        m.logo1 = l1;
+        m.logo2 = l2;
+      }));
+
+      await notifyUser(token, chatId, statusMsgId, `⏳ [3/4] Рендерю постер ${i + 1}/${chunks.length}...`);
+
+      const pngBuffer = await renderPosterBuffer(brand, tourKey, matchChunk);
+      const postFix = chunks.length > 1 ? `_part${i + 1}` : '';
+      await sendDocument(token, chatId, pngBuffer, `${brand}_${tourKey}${postFix}.png`);
+    }
+
+    await deleteMessage(token, chatId, statusMsgId);
+
+  } catch (err) {
+    console.error('Generation error:', err);
+    await notifyUser(token, chatId, statusMsgId, `⚠️ Сбой при генерации: ${err.message || String(err)}`);
+  }
+}
+
+// СУПЕР-ФИЧА: Генерация по тексту пользователя
+async function handleCustomTextMatches(token, chatId, brand, text) {
+  let statusMsgId = null;
+
+  try {
+    const initRes = await sendMessage(token, chatId, `⏳ Ищу ваши матчи в линии букмекера...`);
+    statusMsgId = initRes?.result?.message_id;
+
+    // Разбиваем текст на строки
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean).slice(0, 4);
+    if (lines.length === 0) return;
+
+    // Загружаем всю актуальную линию футбола
+    const allSoccerEvents = await fetchAllActiveSoccer();
+
+    const matchedList = [];
+    const notFound = [];
+
+    for (const line of lines) {
+      // Ищем разделители: " - ", " — ", " vs ", " против "
+      const parts = line.split(/\s*(?:-|—|–|vs|против)\s*/i);
+      if (parts.length < 2) continue;
+
+      const userT1 = parts[0].trim();
+      const userT2 = parts[1].trim();
+
+      const foundEvent = findEventByTeams(allSoccerEvents, userT1, userT2);
+      if (foundEvent) {
+        matchedList.push(foundEvent);
+      } else {
+        notFound.push(`${userT1} — ${userT2}`);
+      }
+    }
+
+    if (matchedList.length === 0) {
+      await notifyUser(token, chatId, statusMsgId, `❌ Не удалось найти указанные матчи в линии БК.\n\nУбедитесь, что команды написаны правильно.`);
+      return;
+    }
+
+    await notifyUser(token, chatId, statusMsgId, `⏳ Найдено матчей: ${matchedList.length}/4. Загружаю логотипы...`);
+
+    // Загрузка логотипов
+    await Promise.all(matchedList.map(async m => {
       const [l1, l2] = await Promise.all([
         getLogoWithPriority(m.team1, m.fallback1),
         getLogoWithPriority(m.team2, m.fallback2)
@@ -176,55 +343,215 @@ async function handlePosterGeneration(token, chatId, tourKey) {
       m.logo2 = l2;
     }));
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ [3/4] Рендерю постер HD (1280×1280)...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ Рендерю постер «Матчи дня»...`);
 
-    const bgUrl = BACKGROUNDS.twin[tourKey] || BACKGROUNDS.twin.games;
-    const bgDataUrl = await getCachedBg(bgUrl);
+    // Рендерим постер "games"
+    const pngBuffer = await renderPosterBuffer(brand, 'games', matchedList);
+    await sendDocument(token, chatId, pngBuffer, `${brand}_custom_matches.png`);
 
-    const layout = h('div', {
-      style: {
-        display: 'flex',
-        width: '1280px',
-        height: '1280px',
-        backgroundImage: `url(${bgDataUrl})`,
-        backgroundSize: '1280px 1280px',
-        position: 'relative',
-        fontFamily: 'Benzin'
-      }
-    },
-      h('div', {
-        style: {
-          position: 'absolute',
-          left: '80px',
-          top: '480px',
-          width: '640px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '28px'
-        }
-      },
-        ...top4.map(m => renderTwinMatchCard(m))
-      )
-    );
+    if (notFound.length > 0) {
+      await sendMessage(token, chatId, `ℹ️ Следующие матчи не были найдены в линии:\n• ${notFound.join('\n• ')}`);
+    }
 
-    const svg = await satori(layout, {
-      width: 1280,
-      height: 1280,
-      fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
-    });
-
-    const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
-    const pngBuffer = resvg.render().asPng();
-
-    await notifyUser(token, chatId, statusMsgId, `⏳ [4/4] Отправляю файл...`);
-
-    await sendDocument(token, chatId, pngBuffer, `twin_${tourKey}.png`);
     await deleteMessage(token, chatId, statusMsgId);
 
   } catch (err) {
-    console.error('Ошибка в handlePosterGeneration:', err);
-    await notifyUser(token, chatId, statusMsgId, `⚠️ Сбой при генерации: ${err.message || String(err)}`);
+    console.error('Custom match error:', err);
+    await notifyUser(token, chatId, statusMsgId, `⚠️ Ошибка: ${err.message || String(err)}`);
   }
+}
+
+// Поиск матча в линии по названиям команд пользователя
+function findEventByTeams(events, name1, name2) {
+  const clean1 = cleanTeamName(name1);
+  const clean2 = cleanTeamName(name2);
+
+  for (const ev of events) {
+    if (!ev.competitors || ev.competitors.length < 2) continue;
+    const evT1 = cleanTeamName(ev.competitors[0].name);
+    const evT2 = cleanTeamName(ev.competitors[1].name);
+
+    const directMatch = (evT1.includes(clean1) || clean1.includes(evT1)) && (evT2.includes(clean2) || clean2.includes(evT2));
+    const reverseMatch = (evT1.includes(clean2) || clean2.includes(evT1)) && (evT2.includes(clean1) || clean1.includes(evT2));
+
+    if (directMatch || reverseMatch) {
+      return parseSingleEvent(ev);
+    }
+  }
+  return null;
+}
+
+function cleanTeamName(name) {
+  return String(name).toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/(хк|hc|фк|пфк|fc|pfc|cf|cd|ud|rcd|sd|us|as|ssc|ac)\b/gi, '')
+    .replace(/[^a-zа-я0-9]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseSingleEvent(ev) {
+  let rawTime = ev.kickoff || ev.startTime || ev.date || Date.now();
+  if (!isNaN(rawTime) && String(rawTime).length === 10) rawTime = parseInt(rawTime) * 1000;
+  const d = new Date(rawTime);
+  const timeStr = d.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit' });
+
+  let p1 = '1.85', x = '3.50', p2 = '4.20';
+  if (ev.markets) {
+    for (const m of ev.markets) {
+      let fH = false, fD = false, fA = false;
+      let t1 = p1, tx = x, t2 = p2;
+      if (m.runners) {
+        for (const r of m.runners) {
+          if (r.tags?.includes('HOME')) { t1 = Number(r.price).toFixed(2); fH = true; }
+          if (r.tags?.includes('DRAW')) { tx = Number(r.price).toFixed(2); fD = true; }
+          if (r.tags?.includes('AWAY')) { t2 = Number(r.price).toFixed(2); fA = true; }
+        }
+        if (fH && fA) {
+          p1 = t1; x = fD ? tx : '-'; p2 = t2;
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    team1: ev.competitors[0].name.toUpperCase(),
+    team2: ev.competitors[1].name.toUpperCase(),
+    time: timeStr,
+    timestamp: Number(rawTime),
+    p1, x, p2,
+    fallback1: ev.competitors[0].logo || ev.competitors[0].imageUrl || null,
+    fallback2: ev.competitors[1].logo || ev.competitors[1].imageUrl || null
+  };
+}
+
+// Запрос матчей турнира или топ-Европы для "Матчей дня"
+async function fetchTournamentMatches(tourKey) {
+  const API_HEADERS = {
+    "accept": "application/json, text/plain, */*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0",
+    "x-app-skin": "twin",
+    "x-requested-uri": "/ru-ru/top/soccer",
+    "Referer": "https://4278.info/"
+  };
+
+  let rawEvents = [];
+
+  try {
+    if (tourKey === 'games') {
+      // Для "Матчей дня": опрашиваем Топ-5 лиг Европы (БЕЗ РПЛ!)
+      const requests = TOP_EUROPE_LEAGUES.map(league =>
+        fetch(`https://4278.info/api-2/betline/events/all?ctag=ru-RU-7da6p&hideClosed=true&flags=reg,urlv2,orn2,cn,mm2,rrc,nodup,cmg&league_id=${league.id}`, {
+          headers: API_HEADERS
+        }).then(r => r.json()).then(j => (j.events || []).map(e => ({ ...e, leagueKey: league.name }))).catch(() => [])
+      );
+
+      const results = await Promise.all(requests);
+      
+      // Берем по 1 лучшему матчу из каждой европейской лиги!
+      const leagueMatches = new Map();
+      for (const eventList of results) {
+        for (const ev of eventList) {
+          const parsed = parseSingleEvent(ev);
+          if (parsed && !leagueMatches.has(ev.leagueKey)) {
+            leagueMatches.set(ev.leagueKey, parsed);
+            break; // 1 матч из этой лиги взят
+          }
+        }
+      }
+
+      return Array.from(leagueMatches.values()).slice(0, 4);
+
+    } else {
+      // Для конкретного турнира (РПЛ, ЛЧ, ЛЕ, ЛК)
+      const targetTournament = TOURNAMENTS.find(t => t.key === tourKey);
+      if (!targetTournament) return [];
+
+      const url = `https://4278.info/api-2/betline/events/all?ctag=ru-RU-7da6p&hideClosed=true&flags=reg,urlv2,orn2,cn,mm2,rrc,nodup,cmg&league_id=${targetTournament.id}`;
+      const res = await fetch(url, { headers: API_HEADERS });
+      if (res.ok) {
+        const json = await res.json();
+        rawEvents = json?.events || [];
+      }
+    }
+  } catch (e) {
+    console.error('Fetch tournament error:', e);
+    return [];
+  }
+
+  const list = [];
+  for (const ev of rawEvents) {
+    if (!ev.competitors || ev.competitors.length < 2) continue;
+    if (ev?.league?.virtual === true || ev?.sport?.virtual === true) continue;
+    if (/\bsrl\b/i.test(ev.competitors[0].name) || /\bsrl\b/i.test(ev.competitors[1].name)) continue;
+
+    const parsed = parseSingleEvent(ev);
+    if (parsed) list.push(parsed);
+  }
+
+  list.sort((a, b) => a.timestamp - b.timestamp);
+  return list;
+}
+
+// Загрузка всех активных матчей для текстового поиска
+async function fetchAllActiveSoccer() {
+  const API_HEADERS = {
+    "accept": "application/json, text/plain, */*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0",
+    "Referer": "https://4278.info/"
+  };
+
+  const allLeagueIds = TOURNAMENTS.map(t => t.id);
+  const requests = allLeagueIds.map(id =>
+    fetch(`https://4278.info/api-2/betline/events/all?ctag=ru-RU-7da6p&hideClosed=true&flags=reg,urlv2,orn2,cn,mm2,rrc,nodup,cmg&league_id=${id}`, {
+      headers: API_HEADERS
+    }).then(r => r.json()).then(j => j.events || []).catch(() => [])
+  );
+
+  const results = await Promise.all(requests);
+  return results.flat();
+}
+
+// Сборка постера
+async function renderPosterBuffer(brand, tourKey, matches) {
+  const bgUrl = BACKGROUNDS[brand]?.[tourKey] || BACKGROUNDS[brand]?.games || BACKGROUNDS.twin.games;
+  const bgDataUrl = await getCachedBg(bgUrl);
+
+  const layout = h('div', {
+    style: {
+      display: 'flex',
+      width: '1280px',
+      height: '1280px',
+      backgroundImage: `url(${bgDataUrl})`,
+      backgroundSize: '1280px 1280px',
+      position: 'relative',
+      fontFamily: 'Benzin'
+    }
+  },
+    h('div', {
+      style: {
+        position: 'absolute',
+        left: '80px',
+        top: '480px',
+        width: '640px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '28px'
+      }
+    },
+      ...matches.map(m => renderTwinMatchCard(m))
+    )
+  );
+
+  const svg = await satori(layout, {
+    width: 1280,
+    height: 1280,
+    fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
+  });
+
+  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
+  return resvg.render().asPng();
 }
 
 function renderTwinMatchCard(m) {
@@ -236,7 +563,6 @@ function renderTwinMatchCard(m) {
       width: '640px'
     }
   },
-    // Бейдж времени
     h('div', {
       style: {
         position: 'absolute',
@@ -252,7 +578,6 @@ function renderTwinMatchCard(m) {
       }
     }, m.time),
 
-    // Верхняя тёмная часть
     h('div', {
       style: {
         display: 'flex',
@@ -290,7 +615,6 @@ function renderTwinMatchCard(m) {
       )
     ),
 
-    // Нижняя белая плашка кэфов (компактная)
     h('div', {
       style: {
         display: 'flex',
@@ -315,143 +639,6 @@ function renderTwinMatchCard(m) {
   );
 }
 
-// Загрузка матчей со строгим отсевом мусора
-async function loadMatchesFromLine(targetTourKey) {
-  const targetTournament = TOURNAMENTS.find(t => t.key === targetTourKey);
-  const targetId = targetTournament?.id;
-
-  let url = `https://4278.info/api-2/betline/events/all?ctag=ru-RU-7da6p&hideClosed=true&flags=reg,urlv2,orn2,cn,mm2,rrc,nodup,cmg`;
-  if (targetId) url += `&league_id=${encodeURIComponent(targetId)}`;
-
-  let rawEvents = [];
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "accept": "application/json, text/plain, */*",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0",
-        "x-app-skin": "twin",
-        "x-requested-uri": "/ru-ru/top/soccer",
-        "Referer": "https://4278.info/"
-      }
-    });
-    if (res.ok) {
-      const json = await res.json();
-      rawEvents = json?.events || [];
-    }
-  } catch (e) {
-    return { matches: [], debug: `Сбой сети БК: ${e.message}` };
-  }
-
-  const list = [];
-
-  for (const ev of rawEvents) {
-    if (!ev.competitors || ev.competitors.length < 2) continue;
-
-    const t1 = ev.competitors[0].name;
-    const t2 = ev.competitors[1].name;
-    if (!t1 || !t2) continue;
-
-    // 1. ИСКЛЮЧАЕМ КИБЕРСПОРТСМЕНОВ (любые ники в скобках типа "(MACE)" или "(WALTER)")
-    if (/\([a-zа-я0-9_\s]+\)/i.test(t1) || /\([a-zа-я0-9_\s]+\)/i.test(t2)) continue;
-
-    // 2. ИСКЛЮЧАЕМ ВИРТУАЛЬНЫЙ СПОРТ И СИМУЛЯТОРЫ
-    if (ev?.league?.virtual === true || ev?.sport?.virtual === true) continue;
-    if (/\bsrl\b/i.test(t1) || /\bsrl\b/i.test(t2)) continue;
-
-    // 3. ИСКЛЮЧАЕМ НЕКЛАССИЧЕСКИЙ СПОРТ (американский, австралийский футбол, регби, хоккей)
-    const sportUrl = (ev.league?.sport?.url || ev.sport?.url || '').toLowerCase();
-    const urlText = (ev.url || ev.urlv2 || '').toLowerCase();
-    
-    // В URL обязательно должен быть классический соккер
-    const isClassicSoccer = urlText.includes('/soccer/') || sportUrl === 'soccer';
-    if (!isClassicSoccer) continue;
-
-    // 4. ОПРЕДЕЛЕНИЕ ТУРНИРА ПО БЕЛОМУ СПИСКУ
-    const matchedTour = getTournamentFromEvent(ev);
-
-    if (targetTourKey !== 'games') {
-      if (!matchedTour || matchedTour.key !== targetTourKey) continue;
-    } else {
-      // Для "Матчей дня" берём ТОЛЬКО официальные турниры из нашего белого списка!
-      if (!matchedTour) continue;
-    }
-
-    let rawTime = ev.kickoff || ev.startTime || ev.date || Date.now();
-    if (!isNaN(rawTime) && String(rawTime).length === 10) rawTime = parseInt(rawTime) * 1000;
-    const d = new Date(rawTime);
-    const timeStr = d.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit' });
-
-    let p1 = '1.85', x = '3.50', p2 = '4.20';
-    let hasResult = false;
-
-    if (ev.markets) {
-      for (const m of ev.markets) {
-        if (m.runners) {
-          for (const r of m.runners) {
-            if (r.tags?.includes('HOME')) p1 = Number(r.price).toFixed(2);
-            if (r.tags?.includes('DRAW')) x = Number(r.price).toFixed(2);
-            if (r.tags?.includes('AWAY')) p2 = Number(r.price).toFixed(2);
-          }
-          hasResult = true;
-          break;
-        }
-      }
-    }
-
-    if (!hasResult) continue;
-
-    list.push({
-      team1: t1.toUpperCase(),
-      team2: t2.toUpperCase(),
-      time: timeStr,
-      timestamp: Number(rawTime),
-      priority: matchedTour ? matchedTour.priority : 99,
-      p1, x, p2,
-      fallback1: ev.competitors[0].logo || ev.competitors[0].imageUrl || null,
-      fallback2: ev.competitors[1].logo || ev.competitors[1].imageUrl || null
-    });
-  }
-
-  // Сортировка: сначала элитные лиги (РПЛ, АПЛ, Ла Лига), затем по времени
-  list.sort((a, b) => a.priority !== b.priority ? a.priority - b.priority : a.timestamp - b.timestamp);
-
-  return { matches: list, debug: `Найдено в линии: ${list.length}` };
-}
-
-// Определение турнира строго по белому списку
-function getTournamentFromEvent(event) {
-  const candidates = [
-    event?.league?.url,
-    event?.league?.urlv2,
-    event?.league?.id,
-    event?.league?.uid,
-    event?.url
-  ].filter(Boolean).map(v => String(v).trim().toLowerCase());
-
-  for (const tournament of TOURNAMENTS) {
-    if (candidates.some(v => v === tournament.id || v.includes(tournament.id))) {
-      return tournament;
-    }
-  }
-
-  const leagueName = String(event?.league?.name || "").trim().toLowerCase();
-  const urlText = candidates.join(" ");
-
-  // Строго высшие дивизионы (отсекаем Вторую и Первую лигу ФНЛ)
-  if (/^(?:россия:\s*)?премьер-?лига$/i.test(leagueName) || (/\/russia\//i.test(urlText) && /\/premier-league(?:\/|$)/i.test(urlText))) return TOURNAMENTS.find(t => t.key === "rpl") || null;
-  if (/^(?:испания:\s*)?(?:ла\s*лига|laliga)$/i.test(leagueName) || /\/laliga(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "laliga") || null;
-  if (/^(?:англия:\s*)?премьер-?лига$/i.test(leagueName) || (/\/england\//i.test(urlText) && /\/premier-league(?:\/|$)/i.test(urlText))) return TOURNAMENTS.find(t => t.key === "epl") || null;
-  if (/^(?:франция:\s*)?лига\s*1$/i.test(leagueName) || /\/ligue-1(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "ligue1") || null;
-  if (/^(?:германия:\s*)?бундеслига$/i.test(leagueName) || /\/bundesliga(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "bundesliga") || null;
-  if (/^(?:италия:\s*)?italy-serie-a$/i.test(leagueName) || /\/serie-a(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "italy-serie-a") || null;
-  if (/\/uefa-champions-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "ucl") || null;
-  if (/\/uefa-europa-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uel") || null;
-  if (/\/uefa-europa-conference-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uecl") || null;
-  if (/\/uefa-nations-league(?:\/|$)/i.test(urlText)) return TOURNAMENTS.find(t => t.key === "uefa-nations-league") || null;
-
-  return null;
-}
-
 async function getCachedBg(url) {
   if (bgMemoryCache.has(url)) return bgMemoryCache.get(url);
   try {
@@ -467,7 +654,6 @@ async function getCachedBg(url) {
   }
 }
 
-// Приоритетная загрузка логотипа: сначала база плагина с Википедии (актуальные гербы 2023)
 async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
   const cacheKey = String(teamName).toLowerCase().trim();
   if (logoMemoryCache.has(cacheKey)) return logoMemoryCache.get(cacheKey);
@@ -509,7 +695,6 @@ async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
     } catch (e) {}
   }
 
-  // Запасной вариант: берем у букмекера, если клуба нет в базе
   if (bookmakerLogoUrl) {
     try {
       let finalFbUrl = bookmakerLogoUrl.startsWith('/') ? `https://4278.info${bookmakerLogoUrl}` : bookmakerLogoUrl;
@@ -528,32 +713,16 @@ async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
   return null;
 }
 
-async function sendMainMenu(token, chatId) {
-  const keyboard = {
-    inline_keyboard: [
-      [
-        { text: '🟠 Лига Европы (Twin)', callback_data: 'twin_uel' },
-        { text: '🟢 Лига Конференций (Twin)', callback_data: 'twin_uecl' }
-      ],
-      [
-        { text: '⭐️ Лига Чемпионов (Twin)', callback_data: 'twin_ucl' },
-        { text: '🇷🇺 РПЛ (Twin)', callback_data: 'twin_rpl' }
-      ],
-      [
-        { text: '⚽️ Любые матчи дня (Twin)', callback_data: 'twin_games' }
-      ]
-    ]
-  };
+async function sendMessage(token, chatId, text, replyMarkup = null) {
+  const body = { chat_id: chatId, text, parse_mode: 'Markdown' };
+  if (replyMarkup) body.reply_markup = replyMarkup;
 
-  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: '🏆 Выберите турнир для генерации постера Twin (HD 1280×1280):',
-      reply_markup: keyboard
-    })
+    body: JSON.stringify(body)
   });
+  return await res.json();
 }
 
 async function answerCallback(token, callbackQueryId) {
@@ -562,15 +731,6 @@ async function answerCallback(token, callbackQueryId) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ callback_query_id: callbackQueryId })
   });
-}
-
-async function sendMessage(token, chatId, text) {
-  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text })
-  });
-  return await res.json();
 }
 
 async function notifyUser(token, chatId, messageId, text) {
