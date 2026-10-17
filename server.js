@@ -7,7 +7,7 @@ import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Поиск шрифта: в корне или в папке fonts
+// Поиск шрифта
 const fontInRoot = path.join(__dirname, 'Benzin-Bold.ttf');
 const fontInFolder = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
 const fontPath = fs.existsSync(fontInRoot) ? fontInRoot : fontInFolder;
@@ -16,7 +16,7 @@ const benzinBold = fs.readFileSync(fontPath);
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
 const PORT = process.env.PORT || 3000;
 
-// Все твои 12 подложек
+// 12 подложек
 const BACKGROUNDS = {
   twin: {
     uel: 'https://i.postimg.cc/brWTqPVn/ueltwin.jpg',
@@ -50,7 +50,6 @@ const TOURNAMENTS = [
   { id: "1970324836991678", key: "uecl", label: "🏆 ЛК", priority: 8 }
 ];
 
-// Топ-5 чемпионатов Европы (без РПЛ) для "Матчей дня"
 const TOP_EUROPE_LEAGUES = [
   { id: "1970324836975359", name: "epl" },
   { id: "1970324836975689", name: "laliga" },
@@ -62,17 +61,17 @@ const TOP_EUROPE_LEAGUES = [
 const LOGO_MAP = {
   // ЕВРОКУБКИ
   "сабах баку": "Sabah_FC_(Azerbaijan).png", "сабах": "Sabah_FC_(Azerbaijan).png",
-  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "хапоэль беэр шева": "Hapoel_Beer_Sheva.png",
-  "буде-глимт": "Bodo-Glimt.png", "буде глимт": "FK_Bodø-Glimt_Logo.svg",
-  "нек": "NEC_Nijmegen_logo.svg", "ласк": "LASK-Logo_2023.svg",
-  "селтик": "Celtic_FC_crest.svg", "аек афины": "AEK_Athens_FC_logo.svg",
-  "аек": "AEK_Athens_FC_logo.svg", "викинг": "Viking_FK_logo.svg",
-  "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg", "слован братислава": "SK_Slovan_Bratislava_logo.svg",
-  "слован": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
-  "янг бойз": "BSC_Young_Boys_logo.svg", "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
-  "зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "спарта прага": "AC_Sparta_Prague_logo.svg",
-  "мальме": "Malmö_FF_logo.svg", "црвена звезда": "FK_Crvena_zvezda_logo.svg",
-  "бешикташ": "Besiktas_JK.svg", "орхус": "Aarhus_Gymnastikforening_logo.svg",
+  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "буде-глимт": "FK_Bodø-Glimt_Logo.svg",
+  "буде глимт": "FK_Bodø-Glimt_Logo.svg", "нек": "NEC_Nijmegen_logo.svg",
+  "ласк": "LASK-Logo_2023.svg", "селтик": "Celtic_FC_crest.svg",
+  "аек афины": "AEK_Athens_FC_logo.svg", "аек": "AEK_Athens_FC_logo.svg",
+  "викинг": "Viking_FK_logo.svg", "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg",
+  "слован братислава": "SK_Slovan_Bratislava_logo.svg", "слован": "SK_Slovan_Bratislava_logo.svg",
+  "галатасарай": "Galatasaray_Sports_Club_Logo.svg", "янг бойз": "BSC_Young_Boys_logo.svg",
+  "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
+  "спарта прага": "AC_Sparta_Prague_logo.svg", "мальме": "Malmö_FF_logo.svg",
+  "црвена звезда": "FK_Crvena_zvezda_logo.svg", "бешикташ": "Besiktas_JK.svg",
+  "орхус": "Aarhus_Gymnastikforening_logo.svg", "бенфика": "SL_Benfica_logo.svg",
   "лех познань": "Lech_Poznań_logo.svg", "лех": "Lech_Poznań_logo.svg",
   "андерлехт": "RSC_Anderlecht_logo.svg", "трабзонспор": "Trabzonspor_Amblemi.svg",
   "рапид вена": "SK_Rapid_Wien_logo.svg", "купс": "KuPS_logo.svg",
@@ -89,47 +88,48 @@ const LOGO_MAP = {
   "цска": "FC_CSKA_Moscow_Logo.svg", "краснодар": "FC_Krasnodar_Logo.svg",
   "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg", "локомотив": "FC_Lokomotiv_Moscow_Logo.svg",
   "динамо москва": "FC_Dynamo_Moscow_Logo.svg", "динамо м": "FC_Dynamo_Moscow_Logo.svg",
-  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg",
-  "оренбург": "FC_Orenburg_logo.svg", "ахмат": "FC_Akhmat_Grozny_Logo.svg",
-  "рубин": "FC_Rubin_Kazan_logo.svg", "крылья советов": "FC_Krylia_Sovetov_Logo.svg",
-  "крылья": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
-  "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg", "химки": "FC_Khimki_Logo.svg",
-  "балтика": "FC_Baltika_Kaliningrad_logo.png",
+  "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg", "оренбург": "FC_Orenburg_logo.svg",
+  "ахмат": "FC_Akhmat_Grozny_Logo.svg", "рубин": "FC_Rubin_Kazan_logo.svg",
+  "крылья советов": "FC_Krylia_Sovetov_Logo.svg", "крылья": "FC_Krylia_Sovetov_Logo.svg",
+  "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg", "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg",
+  "химки": "FC_Khimki_Logo.svg", "балтика": "FC_Baltika_Kaliningrad_logo.png",
 
   // ФРАНЦИЯ (ПСЖ)
   "псж": "Paris_Saint-Germain_F.C..svg", "psg": "Paris_Saint-Germain_F.C..svg",
-  "пари сен-жермен": "Paris_Saint-Germain_F.C..svg", "пари сен жермен": "Paris_Saint-Germain_F.C..svg",
   "марсель": "Olympique_de_Marseille_logo.svg", "монако": "AS_Monaco_FC_logo.svg",
-  "лион": "Olympique_Lyonnais_logo.svg", "лилль": "Lille_OSC_2018_logo.svg",
-  "ницца": "OGC_Nice_logo.svg", "ланс": "RC_Lens_logo.svg", "ренн": "Stade_Rennais_FC.svg",
+  "лион": "Olympique_Lyonnais_logo.svg", "страсбур": "Racing_Club_de_Strasbourg_Alsace_logo.svg",
 
   // АНГЛИЯ (Ливерпуль)
   "арсенал": "Arsenal_FC.svg", "челси": "FC_Chelsea_Logo.svg",
   "ливерпуль": "FC_Liverpool_Logo.svg", "liverpool": "FC_Liverpool_Logo.svg",
   "манчестер сити": "Manchester_City_FC.svg", "ман сити": "Manchester_City_FC.svg",
-  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "ман юнайтед": "Manchester_United_FC_crest.svg",
-  "тоттенхэм": "Tottenham_Hotspur.svg", "астон вилла": "Aston_Villa_FC_new_crest.svg",
-  "ньюкасл": "Newcastle_United_Logo.svg", "борнмут": "AFC_Bournemouth_%282013%29.svg",
-  "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg", "ноттингем": "Nottingham_Forest_logo.svg",
+  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "тоттенхэм": "Tottenham_Hotspur.svg",
+  "астон вилла": "Aston_Villa_FC_new_crest.svg", "ньюкасл": "Newcastle_United_Logo.svg",
+  "борнмут": "AFC_Bournemouth_%282013%29.svg", "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
+  "брентфорд": "Brentford_FC_crest.svg", "эвертон": "Everton_FC_logo.svg",
 
   // ИСПАНИЯ
   "реал мадрид": "FC_Real_Madrid_Logo.svg", "барселона": "FC_Barcelona.svg",
-  "атлетико": "FC_Atletico_Madrid_Logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
-  "реал сосьедад": "Real_Sociedad_logo.svg", "севилья": "Sevilla_FC_logo.svg",
+  "атлетико": "FC_Atletico_Madrid_Logo.svg", "атлетико мадрид": "FC_Atletico_Madrid_Logo.svg",
+  "эспаньол": "Rcd_espanyol_logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
+  "реал сосьедад": "Real_Sociedad_logo.svg", "бетис": "Real_betis_logo.svg", "реал бетис": "Real_betis_logo.svg",
 
   // ИТАЛИЯ
   "интер": "FC_Internazionale_Milano_2021.svg", "милан": "Logo_of_AC_Milan.svg",
   "ювентус": "Juventus_FC_2017_logo.svg", "наполи": "SSC_Napoli_2025_(white_and_azure).svg",
   "рома": "AS_Roma_logo_%282017%29.svg", "аталанта": "Atalanta_BC.svg",
+  "венеция": "Venezia_FC_2022_logo.svg", "комо": "Como_1907_logo.svg",
 
   // ГЕРМАНИЯ
   "бавария": "FC_Bayern_München_logo_%282017%29.svg", "боруссия дортмунд": "Borussia_Dortmund_logo.svg",
-  "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg"
+  "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg",
+  "вердер": "SV_Werder_Bremen_logo.svg", "вердер бремен": "SV_Werder_Bremen_logo.svg",
+  "падерборн": "SC_Paderborn_07_logo.svg"
 };
 
 const bgMemoryCache = new Map();
 const logoMemoryCache = new Map();
-const userBrands = new Map(); // Хранит выбранный бренд для каждого пользователя (twin / leon / slott)
+const userBrands = new Map();
 
 function h(type, props = {}, ...children) {
   const p = props || {};
@@ -155,7 +155,6 @@ app.post('/webhook', async (req, res) => {
   if (!update) return;
 
   try {
-    // 1. Нажатие на кнопку
     if (update.callback_query) {
       const query = update.callback_query;
       const chatId = query.message.chat.id;
@@ -163,7 +162,6 @@ app.post('/webhook', async (req, res) => {
 
       await answerCallback(TELEGRAM_BOT_TOKEN, query.id);
 
-      // Смена бренда
       if (data.startsWith('setbrand_')) {
         const brand = data.replace('setbrand_', '');
         userBrands.set(chatId, brand);
@@ -171,11 +169,9 @@ app.post('/webhook', async (req, res) => {
         return;
       }
 
-      // Генерация турнира
       const [brand, tourKey] = data.split('_');
       handleTournamentGeneration(TELEGRAM_BOT_TOKEN, chatId, brand || 'twin', tourKey).catch(console.error);
     } 
-    // 2. Текстовое сообщение
     else if (update.message && update.message.chat) {
       const chatId = update.message.chat.id;
       const text = (update.message.text || '').trim();
@@ -183,7 +179,6 @@ app.post('/webhook', async (req, res) => {
       if (text === '/start') {
         await sendBrandSelection(TELEGRAM_BOT_TOKEN, chatId);
       } else {
-        // Пользователь прислал список матчей текстом!
         const currentBrand = userBrands.get(chatId) || 'twin';
         handleCustomTextMatches(TELEGRAM_BOT_TOKEN, chatId, currentBrand, text).catch(console.error);
       }
@@ -193,7 +188,6 @@ app.post('/webhook', async (req, res) => {
   }
 });
 
-// Меню выбора бренда
 async function sendBrandSelection(token, chatId) {
   const keyboard = {
     inline_keyboard: [
@@ -208,7 +202,6 @@ async function sendBrandSelection(token, chatId) {
   await sendMessage(token, chatId, '👋 Выберите бренд для генерации постеров:', keyboard);
 }
 
-// Меню турниров для выбранного бренда
 async function sendTournamentMenu(token, chatId, brand) {
   const brandTitle = brand.toUpperCase();
   let buttons = [];
@@ -233,11 +226,11 @@ async function sendTournamentMenu(token, chatId, brand) {
     ];
   }
 
-  const text = `🏆 Выбран бренд: *${brandTitle}*\n\nВыберите турнир или *просто пришлите список матчей текстом* (до 4 шт.), например:\n\nЛиверпуль - Челси\nРеал Мадрид - Барселона\nИнтер - Милан\nБавария - Боруссия`;
+  const text = `🏆 Выбран бренд: *${brandTitle}*\n\nВыберите турнир или *пришлите список матчей текстом* (до 4 шт.), например:\n\nЛиверпуль - Челси\nБарселона - Реал Мадрид\nИнтер - Милан\nБавария - Боруссия`;
   await sendMessage(token, chatId, text, { inline_keyboard: buttons });
 }
 
-// Генерация по кнопкам
+// Генерация по кнопкам турниров
 async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   let statusMsgId = null;
 
@@ -245,41 +238,47 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
     const initRes = await sendMessage(token, chatId, `⏳ [1/4] Запрашиваю матчи из линии...`);
     statusMsgId = initRes?.result?.message_id;
 
-    const matches = await fetchTournamentMatches(tourKey);
+    // Для Slott берем 8 матчей (2 колонки x 4 строки), для остальных 4-8
+    const maxNeeded = brand === 'slott' ? 8 : (tourKey === 'rpl' || tourKey === 'ucl' ? 8 : 4);
+    const matches = await fetchTournamentMatches(tourKey, maxNeeded);
 
     if (!matches || matches.length === 0) {
-      await notifyUser(token, chatId, statusMsgId, `⚠️ На сегодня в выбранном турнире нет матчей в линии.\n\nПопробуйте «РПЛ» или пришлите матчи текстом!`);
+      await notifyUser(token, chatId, statusMsgId, `⚠️ На сегодня в выбранном турнире нет матчей в линии.\n\nПопробуйте «РПЛ» или пришлите список матчей текстом!`);
       return;
     }
 
-    // ЛОГИКА РАЗБИВКИ НА КАРТИНКИ:
-    // Для РПЛ и ЛЧ: если матчей > 4, делим на 2 картинки (по 4 матча на субботу/воскресенье)
+    // Разбивка на постеры:
+    // Slott: 1 постер на 8 матчей (2 колонки)
+    // Twin / Leon: делим по 4 матча на постер
     let chunks = [];
-    if ((tourKey === 'rpl' || tourKey === 'ucl') && matches.length > 4) {
+    if (brand === 'slott') {
+      chunks = [matches.slice(0, 8)];
+    } else if ((tourKey === 'rpl' || tourKey === 'ucl') && matches.length > 4) {
       chunks = [matches.slice(0, 4), matches.slice(4, 8)];
     } else {
       chunks = [matches.slice(0, 4)];
     }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы (картинок: ${chunks.length})...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ [2/4] Загружаю логотипы...`);
 
-    // Рендерим каждую картинку
     for (let i = 0; i < chunks.length; i++) {
       const matchChunk = chunks[i];
 
-      // Скачиваем логотипы
-      await Promise.all(matchChunk.map(async m => {
-        const [l1, l2] = await Promise.all([
-          getLogoWithPriority(m.team1, m.fallback1),
-          getLogoWithPriority(m.team2, m.fallback2)
-        ]);
-        m.logo1 = l1;
-        m.logo2 = l2;
-      }));
+      // Slott логотипы не нужны (по макету), для Twin и Leon загружаем
+      if (brand !== 'slott') {
+        await Promise.all(matchChunk.map(async m => {
+          const [l1, l2] = await Promise.all([
+            getLogoWikiFirst(m.team1, m.fallback1),
+            getLogoWikiFirst(m.team2, m.fallback2)
+          ]);
+          m.logo1 = l1;
+          m.logo2 = l2;
+        }));
+      }
 
-      await notifyUser(token, chatId, statusMsgId, `⏳ [3/4] Рендерю постер ${i + 1}/${chunks.length}...`);
+      await notifyUser(token, chatId, statusMsgId, `⏳ [3/4] Рендерю постер ${brand.toUpperCase()} (${i + 1}/${chunks.length})...`);
 
-      const pngBuffer = await renderPosterBuffer(brand, tourKey, matchChunk);
+      const pngBuffer = await renderPosterByBrand(brand, tourKey, matchChunk);
       const postFix = chunks.length > 1 ? `_part${i + 1}` : '';
       await sendDocument(token, chatId, pngBuffer, `${brand}_${tourKey}${postFix}.png`);
     }
@@ -292,7 +291,7 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   }
 }
 
-// СУПЕР-ФИЧА: Генерация по тексту пользователя
+// Генерация по пользовательскому тексту
 async function handleCustomTextMatches(token, chatId, brand, text) {
   let statusMsgId = null;
 
@@ -300,18 +299,14 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
     const initRes = await sendMessage(token, chatId, `⏳ Ищу ваши матчи в линии букмекера...`);
     statusMsgId = initRes?.result?.message_id;
 
-    // Разбиваем текст на строки
     const lines = text.split('\n').map(l => l.trim()).filter(Boolean).slice(0, 4);
     if (lines.length === 0) return;
 
-    // Загружаем всю актуальную линию футбола
     const allSoccerEvents = await fetchAllActiveSoccer();
-
     const matchedList = [];
     const notFound = [];
 
     for (const line of lines) {
-      // Ищем разделители: " - ", " — ", " vs ", " против "
       const parts = line.split(/\s*(?:-|—|–|vs|против)\s*/i);
       if (parts.length < 2) continue;
 
@@ -327,30 +322,30 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
     }
 
     if (matchedList.length === 0) {
-      await notifyUser(token, chatId, statusMsgId, `❌ Не удалось найти указанные матчи в линии БК.\n\nУбедитесь, что команды написаны правильно.`);
+      await notifyUser(token, chatId, statusMsgId, `❌ Не удалось найти указанные матчи в линии БК.\n\nПроверьте названия команд.`);
       return;
     }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ Найдено матчей: ${matchedList.length}/4. Загружаю логотипы...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ Найдено матчей: ${matchedList.length}. Загружаю логотипы...`);
 
-    // Загрузка логотипов
-    await Promise.all(matchedList.map(async m => {
-      const [l1, l2] = await Promise.all([
-        getLogoWithPriority(m.team1, m.fallback1),
-        getLogoWithPriority(m.team2, m.fallback2)
-      ]);
-      m.logo1 = l1;
-      m.logo2 = l2;
-    }));
+    if (brand !== 'slott') {
+      await Promise.all(matchedList.map(async m => {
+        const [l1, l2] = await Promise.all([
+          getLogoWikiFirst(m.team1, m.fallback1),
+          getLogoWikiFirst(m.team2, m.fallback2)
+        ]);
+        m.logo1 = l1;
+        m.logo2 = l2;
+      }));
+    }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ Рендерю постер «Матчи дня»...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ Рендерю постер ${brand.toUpperCase()}...`);
 
-    // Рендерим постер "games"
-    const pngBuffer = await renderPosterBuffer(brand, 'games', matchedList);
+    const pngBuffer = await renderPosterByBrand(brand, 'games', matchedList);
     await sendDocument(token, chatId, pngBuffer, `${brand}_custom_matches.png`);
 
     if (notFound.length > 0) {
-      await sendMessage(token, chatId, `ℹ️ Следующие матчи не были найдены в линии:\n• ${notFound.join('\n• ')}`);
+      await sendMessage(token, chatId, `ℹ️ Не найдены в линии:\n• ${notFound.join('\n• ')}`);
     }
 
     await deleteMessage(token, chatId, statusMsgId);
@@ -361,7 +356,6 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
   }
 }
 
-// Поиск матча в линии по названиям команд пользователя
 function findEventByTeams(events, name1, name2) {
   const clean1 = cleanTeamName(name1);
   const clean2 = cleanTeamName(name2);
@@ -395,6 +389,7 @@ function parseSingleEvent(ev) {
   if (!isNaN(rawTime) && String(rawTime).length === 10) rawTime = parseInt(rawTime) * 1000;
   const d = new Date(rawTime);
   const timeStr = d.toLocaleTimeString('ru-RU', { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit' });
+  const [timeH, timeM] = timeStr.split(':');
 
   let p1 = '1.85', x = '3.50', p2 = '4.20';
   if (ev.markets) {
@@ -419,6 +414,8 @@ function parseSingleEvent(ev) {
     team1: ev.competitors[0].name.toUpperCase(),
     team2: ev.competitors[1].name.toUpperCase(),
     time: timeStr,
+    timeH,
+    timeM,
     timestamp: Number(rawTime),
     p1, x, p2,
     fallback1: ev.competitors[0].logo || ev.competitors[0].imageUrl || null,
@@ -426,8 +423,8 @@ function parseSingleEvent(ev) {
   };
 }
 
-// Запрос матчей турнира или топ-Европы для "Матчей дня"
-async function fetchTournamentMatches(tourKey) {
+// Запрос матчей с гарантией уникальности команд
+async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
   const API_HEADERS = {
     "accept": "application/json, text/plain, */*",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0",
@@ -440,7 +437,6 @@ async function fetchTournamentMatches(tourKey) {
 
   try {
     if (tourKey === 'games') {
-      // Для "Матчей дня": опрашиваем Топ-5 лиг Европы (БЕЗ РПЛ!)
       const requests = TOP_EUROPE_LEAGUES.map(league =>
         fetch(`https://4278.info/api-2/betline/events/all?ctag=ru-RU-7da6p&hideClosed=true&flags=reg,urlv2,orn2,cn,mm2,rrc,nodup,cmg&league_id=${league.id}`, {
           headers: API_HEADERS
@@ -448,23 +444,8 @@ async function fetchTournamentMatches(tourKey) {
       );
 
       const results = await Promise.all(requests);
-      
-      // Берем по 1 лучшему матчу из каждой европейской лиги!
-      const leagueMatches = new Map();
-      for (const eventList of results) {
-        for (const ev of eventList) {
-          const parsed = parseSingleEvent(ev);
-          if (parsed && !leagueMatches.has(ev.leagueKey)) {
-            leagueMatches.set(ev.leagueKey, parsed);
-            break; // 1 матч из этой лиги взят
-          }
-        }
-      }
-
-      return Array.from(leagueMatches.values()).slice(0, 4);
-
+      rawEvents = results.flat();
     } else {
-      // Для конкретного турнира (РПЛ, ЛЧ, ЛЕ, ЛК)
       const targetTournament = TOURNAMENTS.find(t => t.key === tourKey);
       if (!targetTournament) return [];
 
@@ -481,20 +462,38 @@ async function fetchTournamentMatches(tourKey) {
   }
 
   const list = [];
+  const seenTeams = new Set(); // Гарантирует, что ни одна команда не встретится дважды!
+
   for (const ev of rawEvents) {
     if (!ev.competitors || ev.competitors.length < 2) continue;
     if (ev?.league?.virtual === true || ev?.sport?.virtual === true) continue;
-    if (/\bsrl\b/i.test(ev.competitors[0].name) || /\bsrl\b/i.test(ev.competitors[1].name)) continue;
+
+    const t1 = ev.competitors[0].name;
+    const t2 = ev.competitors[1].name;
+    if (!t1 || !t2) continue;
+
+    if (/\bsrl\b/i.test(t1) || /\bsrl\b/i.test(t2)) continue;
+    if (/\([a-zа-я0-9_\s]+\)/i.test(t1) || /\([a-zа-я0-9_\s]+\)/i.test(t2)) continue;
+
+    // ПРОВЕРКА УНИКАЛЬНОСТИ: исключаем повторы одной команды (чтобы не было двух Оренбургов)
+    const norm1 = cleanTeamName(t1);
+    const norm2 = cleanTeamName(t2);
+    if (seenTeams.has(norm1) || seenTeams.has(norm2)) continue;
 
     const parsed = parseSingleEvent(ev);
-    if (parsed) list.push(parsed);
+    if (parsed) {
+      seenTeams.add(norm1);
+      seenTeams.add(norm2);
+      list.push(parsed);
+    }
+
+    if (list.length >= maxNeeded) break;
   }
 
   list.sort((a, b) => a.timestamp - b.timestamp);
   return list;
 }
 
-// Загрузка всех активных матчей для текстового поиска
 async function fetchAllActiveSoccer() {
   const API_HEADERS = {
     "accept": "application/json, text/plain, */*",
@@ -513,12 +512,36 @@ async function fetchAllActiveSoccer() {
   return results.flat();
 }
 
-// Сборка постера
-async function renderPosterBuffer(brand, tourKey, matches) {
+// -------------------------------------------------------------
+// РЕНДЕР ПО БРЕНДАМ (TWIN / LEON / SLOTT)
+// -------------------------------------------------------------
+
+async function renderPosterByBrand(brand, tourKey, matches) {
   const bgUrl = BACKGROUNDS[brand]?.[tourKey] || BACKGROUNDS[brand]?.games || BACKGROUNDS.twin.games;
   const bgDataUrl = await getCachedBg(bgUrl);
 
-  const layout = h('div', {
+  let layout;
+  if (brand === 'leon') {
+    layout = createLeonLayout(tourKey, matches, bgDataUrl);
+  } else if (brand === 'slott') {
+    layout = createSlottLayout(matches, bgDataUrl);
+  } else {
+    layout = createTwinLayout(matches, bgDataUrl);
+  }
+
+  const svg = await satori(layout, {
+    width: 1280,
+    height: 1280,
+    fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
+  });
+
+  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
+  return resvg.render().asPng();
+}
+
+// 1. ДИЗАЙН TWIN (карточки слева, компактная белая плашка кэфов)
+function createTwinLayout(matches, bgDataUrl) {
+  return h('div', {
     style: {
       display: 'flex',
       width: '1280px',
@@ -537,24 +560,15 @@ async function renderPosterBuffer(brand, tourKey, matches) {
         width: '640px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '28px'
+        gap: '38px' // Увеличенный зазор, чтобы бейдж времени не накладывался на карточку сверху
       }
     },
-      ...matches.map(m => renderTwinMatchCard(m))
+      ...matches.map(m => renderTwinCard(m))
     )
   );
-
-  const svg = await satori(layout, {
-    width: 1280,
-    height: 1280,
-    fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
-  });
-
-  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
-  return resvg.render().asPng();
 }
 
-function renderTwinMatchCard(m) {
+function renderTwinCard(m) {
   return h('div', {
     style: {
       display: 'flex',
@@ -563,10 +577,11 @@ function renderTwinMatchCard(m) {
       width: '640px'
     }
   },
+    // Бейдж времени
     h('div', {
       style: {
         position: 'absolute',
-        top: '-13px',
+        top: '-15px',
         right: '24px',
         backgroundColor: '#18a0fb',
         color: '#ffffff',
@@ -578,6 +593,7 @@ function renderTwinMatchCard(m) {
       }
     }, m.time),
 
+    // Верхняя тёмная часть
     h('div', {
       style: {
         display: 'flex',
@@ -595,13 +611,7 @@ function renderTwinMatchCard(m) {
       h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
         m.logo1 ? h('img', { src: m.logo1, style: { width: '46px', height: '46px', objectFit: 'contain' } }) : null,
         (m.logo1 && m.logo2) ? h('span', {
-          style: {
-            color: '#ffffff',
-            fontSize: '15px',
-            fontWeight: 'bold',
-            opacity: 0.75,
-            margin: '0 2px'
-          }
+          style: { color: '#ffffff', fontSize: '15px', fontWeight: 'bold', opacity: 0.75, margin: '0 2px' }
         }, 'x') : null,
         m.logo2 ? h('img', { src: m.logo2, style: { width: '46px', height: '46px', objectFit: 'contain' } }) : null
       ),
@@ -615,6 +625,7 @@ function renderTwinMatchCard(m) {
       )
     ),
 
+    // Нижняя компактная плашка кэфов (360px)
     h('div', {
       style: {
         display: 'flex',
@@ -639,6 +650,254 @@ function renderTwinMatchCard(m) {
   );
 }
 
+// 2. ДИЗАЙН LEON (по твоему референсу: КРАСНАЯ полоса кэфов, время вертикально 14/30)
+function createLeonLayout(tourKey, matches, bgDataUrl) {
+  // Для "Матчей дня" карточки встают СПРАВА (слева футболист Салах!), для РПЛ - слева
+  const isGames = tourKey === 'games' || tourKey === 'gamesars';
+  const leftPos = isGames ? '650px' : '80px';
+  const topPos = isGames ? '160px' : '450px';
+
+  return h('div', {
+    style: {
+      display: 'flex',
+      width: '1280px',
+      height: '1280px',
+      backgroundImage: `url(${bgDataUrl})`,
+      backgroundSize: '1280px 1280px',
+      position: 'relative',
+      fontFamily: 'Benzin'
+    }
+  },
+    h('div', {
+      style: {
+        position: 'absolute',
+        left: leftPos,
+        top: topPos,
+        width: '560px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '24px'
+      }
+    },
+      ...matches.map(m => renderLeonCard(m))
+    )
+  );
+}
+
+function renderLeonCard(m) {
+  return h('div', {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      borderRadius: '12px',
+      overflow: 'hidden'
+    }
+  },
+    // Верхняя темная часть
+    h('div', {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: 'rgba(25, 25, 25, 0.9)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        borderTopLeftRadius: '12px',
+        borderTopRightRadius: '12px',
+        padding: '12px 18px',
+        gap: '16px'
+      }
+    },
+      // Время вертикально (14 над 30)
+      h('div', {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '20px',
+          fontWeight: 'bold',
+          lineHeight: '1.1',
+          color: '#ffffff',
+          minWidth: '40px',
+          borderRight: '1px solid rgba(255, 255, 255, 0.15)',
+          paddingRight: '12px'
+        }
+      },
+        h('span', null, m.timeH || '18'),
+        h('span', null, m.timeM || '00')
+      ),
+
+      // Команды со своими логотипами в 2 строки
+      h('div', {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          flex: 1,
+          overflow: 'hidden'
+        }
+      },
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+          m.logo1 ? h('img', { src: m.logo1, style: { width: '28px', height: '28px', objectFit: 'contain' } }) : null,
+          h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1)
+        ),
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+          m.logo2 ? h('img', { src: m.logo2, style: { width: '28px', height: '28px', objectFit: 'contain' } }) : null,
+          h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
+        )
+      )
+    ),
+
+    // Нижняя ФИРМЕННАЯ КРАСНАЯ плашка кэфов Leon
+    h('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: '#e51b24', // Фирменный красный Leon
+        color: '#ffffff',
+        borderBottomLeftRadius: '12px',
+        borderBottomRightRadius: '12px',
+        padding: '6px 12px',
+        fontSize: '21px',
+        fontWeight: 'bold'
+      }
+    },
+      h('span', null, m.p1),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)', fontWeight: 'normal' } }, '|'),
+      h('span', null, m.x !== '-' ? m.x : '3.40'),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)', fontWeight: 'normal' } }, '|'),
+      h('span', null, m.p2)
+    )
+  );
+}
+
+// 3. ДИЗАЙН SLOTT (по твоему референсу: 2 КОЛОНКИ ПО 4 МАТЧА, всего 8 матчей, матовое стекло, без логотипов)
+function createSlottLayout(matches, bgDataUrl) {
+  const col1 = matches.slice(0, 4);
+  const col2 = matches.slice(4, 8);
+
+  return h('div', {
+    style: {
+      display: 'flex',
+      width: '1280px',
+      height: '1280px',
+      backgroundImage: `url(${bgDataUrl})`,
+      backgroundSize: '1280px 1280px',
+      position: 'relative',
+      fontFamily: 'Benzin'
+    }
+  },
+    // Колонка 1
+    h('div', {
+      style: {
+        position: 'absolute',
+        left: '140px',
+        top: '380px',
+        width: '470px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '26px'
+      }
+    },
+      ...col1.map(m => renderSlottCard(m))
+    ),
+
+    // Колонка 2
+    h('div', {
+      style: {
+        position: 'absolute',
+        left: '670px',
+        top: '380px',
+        width: '470px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '26px'
+      }
+    },
+      ...col2.map(m => renderSlottCard(m))
+    )
+  );
+}
+
+function renderSlottCard(m) {
+  return h('div', {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      borderRadius: '16px',
+      overflow: 'hidden',
+      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)'
+    }
+  },
+    // Верхняя часть (светлое матовое стекло)
+    h('div', {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'rgba(215, 230, 255, 0.9)', // Светло-голубой Slott
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px',
+        padding: '12px 18px'
+      }
+    },
+      // Команды в 2 строки без логотипов
+      h('div', {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          overflow: 'hidden',
+          flex: 1
+        }
+      },
+        h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1),
+        h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
+      ),
+
+      // Время справа вертикальным бейджем
+      h('div', {
+        style: {
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          color: '#1e293b',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          padding: '4px 8px',
+          borderRadius: '8px'
+        }
+      }, m.time)
+    ),
+
+    // Нижняя плашка кэфов (градиент Slott)
+    h('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        background: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
+        color: '#ffffff',
+        borderBottomLeftRadius: '16px',
+        borderBottomRightRadius: '16px',
+        padding: '6px 12px',
+        fontSize: '20px',
+        fontWeight: 'bold'
+      }
+    },
+      h('span', null, m.p1),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)' } }, '|'),
+      h('span', null, m.x !== '-' ? m.x : '3.40'),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)' } }, '|'),
+      h('span', null, m.p2)
+    )
+  );
+}
+
+// -------------------------------------------------------------
+// КЭШ И ЗАГРУЗКА ИЗОБРАЖЕНИЙ
+// -------------------------------------------------------------
+
 async function getCachedBg(url) {
   if (bgMemoryCache.has(url)) return bgMemoryCache.get(url);
   try {
@@ -654,7 +913,8 @@ async function getCachedBg(url) {
   }
 }
 
-async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
+// Тройной поиск по Википедии (Commons -> RuWiki -> EnWiki, как в твоем плагине)
+async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
   const cacheKey = String(teamName).toLowerCase().trim();
   if (logoMemoryCache.has(cacheKey)) return logoMemoryCache.get(cacheKey);
 
@@ -664,37 +924,43 @@ async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
   let fileName = null;
   for (const key in LOGO_MAP) {
     const k = key.toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-    if (clean === k) {
-      fileName = LOGO_MAP[key];
-      break;
-    }
+    if (clean === k) { fileName = LOGO_MAP[key]; break; }
   }
 
   if (!fileName) {
     for (const key in LOGO_MAP) {
       const k = key.toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-      if (clean.includes(k) || k.includes(clean)) {
-        fileName = LOGO_MAP[key];
-        break;
-      }
+      if (clean.includes(k) || k.includes(clean)) { fileName = LOGO_MAP[key]; break; }
     }
   }
 
+  // 1. Поиск по Википедии (Commons -> RuWiki -> EnWiki)
   if (fileName) {
-    try {
-      const directWikiThumb = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(fileName)}?width=160`;
-      const wRes = await fetch(directWikiThumb, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0' }
-      });
-      if (wRes.ok) {
-        const buf = await wRes.arrayBuffer();
-        const dataUrl = `data:image/png;base64,${Buffer.from(buf).toString('base64')}`;
-        logoMemoryCache.set(cacheKey, dataUrl);
-        return dataUrl;
-      }
-    } catch (e) {}
+    const safeName = encodeURIComponent(fileName);
+    const endpoints = [
+      `https://commons.wikimedia.org/wiki/Special:FilePath/${safeName}?width=160`,
+      `https://ru.wikipedia.org/wiki/Special:FilePath/${safeName}?width=160`,
+      `https://en.wikipedia.org/wiki/Special:FilePath/${safeName}?width=160`
+    ];
+
+    for (const url of endpoints) {
+      try {
+        const wRes = await fetch(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0' }
+        });
+        if (wRes.ok) {
+          const buf = await wRes.arrayBuffer();
+          if (buf.byteLength > 200) {
+            const dataUrl = `data:image/png;base64,${Buffer.from(buf).toString('base64')}`;
+            logoMemoryCache.set(cacheKey, dataUrl);
+            return dataUrl;
+          }
+        }
+      } catch (e) {}
+    }
   }
 
+  // 2. Фоллбэк на сайт букмекера
   if (bookmakerLogoUrl) {
     try {
       let finalFbUrl = bookmakerLogoUrl.startsWith('/') ? `https://4278.info${bookmakerLogoUrl}` : bookmakerLogoUrl;
@@ -712,6 +978,10 @@ async function getLogoWithPriority(teamName, bookmakerLogoUrl) {
 
   return null;
 }
+
+// -------------------------------------------------------------
+// СЛУЖЕБНЫЕ МЕТОДЫ TELEGRAM
+// -------------------------------------------------------------
 
 async function sendMessage(token, chatId, text, replyMarkup = null) {
   const body = { chat_id: chatId, text, parse_mode: 'Markdown' };
