@@ -7,16 +7,31 @@ import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Поиск шрифта
-const fontInRoot = path.join(__dirname, 'Benzin-Bold.ttf');
-const fontInFolder = path.join(__dirname, 'fonts', 'Benzin-Bold.ttf');
-const fontPath = fs.existsSync(fontInRoot) ? fontInRoot : fontInFolder;
-const benzinBold = fs.readFileSync(fontPath);
+// Загрузка шрифтов из корня или папки fonts
+function loadFont(fileName) {
+  const inRoot = path.join(__dirname, fileName);
+  const inFolder = path.join(__dirname, 'fonts', fileName);
+  if (fs.existsSync(inRoot)) return fs.readFileSync(inRoot);
+  if (fs.existsSync(inFolder)) return fs.readFileSync(inFolder);
+  return null;
+}
+
+const benzinBold = loadFont('Benzin-Bold.ttf');
+const dinProBold = loadFont('dinpro_bold.otf') || loadFont('dinpro.otf') || benzinBold;
+const compactaBold = loadFont('CompactaCom-Bold.otf') || benzinBold;
+const openSansBold = loadFont('OpenSans_Condensed-Bold.ttf') || benzinBold;
+
+const ALL_FONTS = [
+  { name: 'Benzin', data: benzinBold, weight: 700 },
+  { name: 'DINPro', data: dinProBold, weight: 700 },
+  { name: 'Compacta', data: compactaBold, weight: 700 },
+  { name: 'OpenSans', data: openSansBold, weight: 700 }
+].filter(f => f.data);
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
 const PORT = process.env.PORT || 3000;
 
-// 12 подложек
+// Все 12 подложек
 const BACKGROUNDS = {
   twin: {
     uel: 'https://i.postimg.cc/brWTqPVn/ueltwin.jpg',
@@ -112,7 +127,7 @@ const LOGO_MAP = {
   "реал мадрид": "FC_Real_Madrid_Logo.svg", "барселона": "FC_Barcelona.svg",
   "атлетико": "FC_Atletico_Madrid_Logo.svg", "атлетико мадрид": "FC_Atletico_Madrid_Logo.svg",
   "эспаньол": "Rcd_espanyol_logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
-  "реал сосьедад": "Real_Sociedad_logo.svg", "бетис": "Real_betis_logo.svg", "реал бетис": "Real_betis_logo.svg",
+  "реал сосьедад": "Real_Sociedad_logo.svg", "севилья": "Sevilla_FC_logo.svg",
 
   // ИТАЛИЯ
   "интер": "FC_Internazionale_Milano_2021.svg", "милан": "Logo_of_AC_Milan.svg",
@@ -230,7 +245,6 @@ async function sendTournamentMenu(token, chatId, brand) {
   await sendMessage(token, chatId, text, { inline_keyboard: buttons });
 }
 
-// Генерация по кнопкам турниров
 async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   let statusMsgId = null;
 
@@ -238,7 +252,6 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
     const initRes = await sendMessage(token, chatId, `⏳ [1/4] Запрашиваю матчи из линии...`);
     statusMsgId = initRes?.result?.message_id;
 
-    // Для Slott берем 8 матчей (2 колонки x 4 строки), для остальных 4-8
     const maxNeeded = brand === 'slott' ? 8 : (tourKey === 'rpl' || tourKey === 'ucl' ? 8 : 4);
     const matches = await fetchTournamentMatches(tourKey, maxNeeded);
 
@@ -247,9 +260,6 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
       return;
     }
 
-    // Разбивка на постеры:
-    // Slott: 1 постер на 8 матчей (2 колонки)
-    // Twin / Leon: делим по 4 матча на постер
     let chunks = [];
     if (brand === 'slott') {
       chunks = [matches.slice(0, 8)];
@@ -264,7 +274,6 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
     for (let i = 0; i < chunks.length; i++) {
       const matchChunk = chunks[i];
 
-      // Slott логотипы не нужны (по макету), для Twin и Leon загружаем
       if (brand !== 'slott') {
         await Promise.all(matchChunk.map(async m => {
           const [l1, l2] = await Promise.all([
@@ -291,7 +300,6 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   }
 }
 
-// Генерация по пользовательскому тексту
 async function handleCustomTextMatches(token, chatId, brand, text) {
   let statusMsgId = null;
 
@@ -384,6 +392,26 @@ function cleanTeamName(name) {
     .trim();
 }
 
+function getRussianDateUpper(timestamp) {
+  const d = new Date(timestamp);
+  const months = ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ'];
+  const dtf = new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', day: 'numeric', month: 'numeric' });
+  const parts = dtf.formatToParts(d);
+  const day = parts.find(p => p.type === 'day')?.value || d.getDate();
+  const monthNum = parseInt(parts.find(p => p.type === 'month')?.value || (d.getMonth() + 1), 10) - 1;
+  return `${day} ${months[monthNum]}`;
+}
+
+function getRussianDateTitleCase(timestamp) {
+  const d = new Date(timestamp);
+  const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+  const dtf = new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', day: 'numeric', month: 'numeric' });
+  const parts = dtf.formatToParts(d);
+  const day = parts.find(p => p.type === 'day')?.value || d.getDate();
+  const monthNum = parseInt(parts.find(p => p.type === 'month')?.value || (d.getMonth() + 1), 10) - 1;
+  return `${day} ${months[monthNum]}`;
+}
+
 function parseSingleEvent(ev) {
   let rawTime = ev.kickoff || ev.startTime || ev.date || Date.now();
   if (!isNaN(rawTime) && String(rawTime).length === 10) rawTime = parseInt(rawTime) * 1000;
@@ -423,7 +451,6 @@ function parseSingleEvent(ev) {
   };
 }
 
-// Запрос матчей с гарантией уникальности команд
 async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
   const API_HEADERS = {
     "accept": "application/json, text/plain, */*",
@@ -462,7 +489,7 @@ async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
   }
 
   const list = [];
-  const seenTeams = new Set(); // Гарантирует, что ни одна команда не встретится дважды!
+  const seenTeams = new Set(); // Исключает дубли команд
 
   for (const ev of rawEvents) {
     if (!ev.competitors || ev.competitors.length < 2) continue;
@@ -475,7 +502,7 @@ async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
     if (/\bsrl\b/i.test(t1) || /\bsrl\b/i.test(t2)) continue;
     if (/\([a-zа-я0-9_\s]+\)/i.test(t1) || /\([a-zа-я0-9_\s]+\)/i.test(t2)) continue;
 
-    // ПРОВЕРКА УНИКАЛЬНОСТИ: исключаем повторы одной команды (чтобы не было двух Оренбургов)
+    // Проверка уникальности
     const norm1 = cleanTeamName(t1);
     const norm2 = cleanTeamName(t2);
     if (seenTeams.has(norm1) || seenTeams.has(norm2)) continue;
@@ -513,18 +540,19 @@ async function fetchAllActiveSoccer() {
 }
 
 // -------------------------------------------------------------
-// РЕНДЕР ПО БРЕНДАМ (TWIN / LEON / SLOTT)
+// РЕНДЕР ПО БРЕНДАМ
 // -------------------------------------------------------------
 
 async function renderPosterByBrand(brand, tourKey, matches) {
   const bgUrl = BACKGROUNDS[brand]?.[tourKey] || BACKGROUNDS[brand]?.games || BACKGROUNDS.twin.games;
   const bgDataUrl = await getCachedBg(bgUrl);
+  const firstMatchTimestamp = matches[0]?.timestamp || Date.now();
 
   let layout;
   if (brand === 'leon') {
-    layout = createLeonLayout(tourKey, matches, bgDataUrl);
+    layout = createLeonLayout(tourKey, matches, bgDataUrl, firstMatchTimestamp);
   } else if (brand === 'slott') {
-    layout = createSlottLayout(matches, bgDataUrl);
+    layout = createSlottLayout(matches, bgDataUrl, firstMatchTimestamp);
   } else {
     layout = createTwinLayout(matches, bgDataUrl);
   }
@@ -532,14 +560,14 @@ async function renderPosterByBrand(brand, tourKey, matches) {
   const svg = await satori(layout, {
     width: 1280,
     height: 1280,
-    fonts: [{ name: 'Benzin', data: benzinBold, weight: 700 }]
+    fonts: ALL_FONTS
   });
 
   const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1280 } });
   return resvg.render().asPng();
 }
 
-// 1. ДИЗАЙН TWIN (карточки слева, компактная белая плашка кэфов)
+// 1. ДИЗАЙН TWIN (шрифт Benzin, плашка времени строго НАД карточкой)
 function createTwinLayout(matches, bgDataUrl) {
   return h('div', {
     style: {
@@ -556,11 +584,11 @@ function createTwinLayout(matches, bgDataUrl) {
       style: {
         position: 'absolute',
         left: '80px',
-        top: '480px',
+        top: '475px',
         width: '640px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '38px' // Увеличенный зазор, чтобы бейдж времени не накладывался на карточку сверху
+        gap: '38px' // Увеличен зазор, чтобы время не накладывалось
       }
     },
       ...matches.map(m => renderTwinCard(m))
@@ -577,19 +605,19 @@ function renderTwinCard(m) {
       width: '640px'
     }
   },
-    // Бейдж времени
+    // Плашка времени строго НАД карточкой
     h('div', {
       style: {
         position: 'absolute',
-        top: '-15px',
+        top: '-16px',
         right: '24px',
         backgroundColor: '#18a0fb',
         color: '#ffffff',
         padding: '3px 12px',
-        borderRadius: '4px',
+        borderRadius: '5px',
         fontSize: '15px',
         fontWeight: 'bold',
-        zIndex: 10
+        zIndex: 20
       }
     }, m.time),
 
@@ -625,7 +653,7 @@ function renderTwinCard(m) {
       )
     ),
 
-    // Нижняя компактная плашка кэфов (360px)
+    // Нижняя белая плашка кэфов (360px)
     h('div', {
       style: {
         display: 'flex',
@@ -650,12 +678,12 @@ function renderTwinCard(m) {
   );
 }
 
-// 2. ДИЗАЙН LEON (по твоему референсу: КРАСНАЯ полоса кэфов, время вертикально 14/30)
-function createLeonLayout(tourKey, matches, bgDataUrl) {
-  // Для "Матчей дня" карточки встают СПРАВА (слева футболист Салах!), для РПЛ - слева
+// 2. ДИЗАЙН LEON (шрифт DIN Pro, дата в шапке после палки, красная полоса кэфов)
+function createLeonLayout(tourKey, matches, bgDataUrl, firstTimestamp) {
   const isGames = tourKey === 'games' || tourKey === 'gamesars';
   const leftPos = isGames ? '650px' : '80px';
   const topPos = isGames ? '160px' : '450px';
+  const dateStrUpper = getRussianDateUpper(firstTimestamp);
 
   return h('div', {
     style: {
@@ -665,9 +693,25 @@ function createLeonLayout(tourKey, matches, bgDataUrl) {
       backgroundImage: `url(${bgDataUrl})`,
       backgroundSize: '1280px 1280px',
       position: 'relative',
-      fontFamily: 'Benzin'
+      fontFamily: 'DINPro'
     }
   },
+    // ДАТА В ШАПКЕ ПОСЛЕ ПАЙПА: РОССИЯ | 18 ОКТЯБРЯ  или  ЕВРОПА | 18 ОКТЯБРЯ
+    h('span', {
+      style: {
+        position: 'absolute',
+        left: '264px',
+        top: '84px',
+        color: '#ffffff',
+        fontSize: '32px',
+        fontWeight: 'bold',
+        fontFamily: 'DINPro',
+        textTransform: 'uppercase',
+        letterSpacing: '1px'
+      }
+    }, dateStrUpper),
+
+    // Карточки
     h('div', {
       style: {
         position: 'absolute',
@@ -691,15 +735,16 @@ function renderLeonCard(m) {
       flexDirection: 'column',
       width: '100%',
       borderRadius: '12px',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      fontFamily: 'DINPro'
     }
   },
-    // Верхняя темная часть
+    // Верхняя тёмная часть
     h('div', {
       style: {
         display: 'flex',
         alignItems: 'center',
-        backgroundColor: 'rgba(25, 25, 25, 0.9)',
+        backgroundColor: 'rgba(25, 25, 25, 0.92)',
         border: '1px solid rgba(255, 255, 255, 0.1)',
         borderTopLeftRadius: '12px',
         borderTopRightRadius: '12px',
@@ -707,27 +752,28 @@ function renderLeonCard(m) {
         gap: '16px'
       }
     },
-      // Время вертикально (14 над 30)
+      // Время вертикально 14 / 30
       h('div', {
         style: {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '20px',
+          fontSize: '22px',
           fontWeight: 'bold',
           lineHeight: '1.1',
           color: '#ffffff',
-          minWidth: '40px',
+          minWidth: '42px',
           borderRight: '1px solid rgba(255, 255, 255, 0.15)',
-          paddingRight: '12px'
+          paddingRight: '14px',
+          fontFamily: 'DINPro'
         }
       },
         h('span', null, m.timeH || '18'),
         h('span', null, m.timeM || '00')
       ),
 
-      // Команды со своими логотипами в 2 строки
+      // Команды с логотипами в 2 строки
       h('div', {
         style: {
           display: 'flex',
@@ -739,28 +785,29 @@ function renderLeonCard(m) {
       },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
           m.logo1 ? h('img', { src: m.logo1, style: { width: '28px', height: '28px', objectFit: 'contain' } }) : null,
-          h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1)
+          h('span', { style: { fontSize: '19px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1)
         ),
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
           m.logo2 ? h('img', { src: m.logo2, style: { width: '28px', height: '28px', objectFit: 'contain' } }) : null,
-          h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
+          h('span', { style: { fontSize: '19px', fontWeight: 'bold', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
         )
       )
     ),
 
-    // Нижняя ФИРМЕННАЯ КРАСНАЯ плашка кэфов Leon
+    // Красная фирменная полоса кэфов Leon
     h('div', {
       style: {
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#e51b24', // Фирменный красный Leon
+        backgroundColor: '#e51b24',
         color: '#ffffff',
         borderBottomLeftRadius: '12px',
         borderBottomRightRadius: '12px',
         padding: '6px 12px',
-        fontSize: '21px',
-        fontWeight: 'bold'
+        fontSize: '22px',
+        fontWeight: 'bold',
+        fontFamily: 'DINPro'
       }
     },
       h('span', null, m.p1),
@@ -772,10 +819,11 @@ function renderLeonCard(m) {
   );
 }
 
-// 3. ДИЗАЙН SLOTT (по твоему референсу: 2 КОЛОНКИ ПО 4 МАТЧА, всего 8 матчей, матовое стекло, без логотипов)
-function createSlottLayout(matches, bgDataUrl) {
+// 3. ДИЗАЙН SLOTT (шрифт OpenSans / Compacta, дата в фиолетовом бабле, время повернуто на 90 градусов)
+function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
   const col1 = matches.slice(0, 4);
   const col2 = matches.slice(4, 8);
+  const dateStrTitleCase = getRussianDateTitleCase(firstTimestamp);
 
   return h('div', {
     style: {
@@ -785,19 +833,42 @@ function createSlottLayout(matches, bgDataUrl) {
       backgroundImage: `url(${bgDataUrl})`,
       backgroundSize: '1280px 1280px',
       position: 'relative',
-      fontFamily: 'Benzin'
+      fontFamily: 'OpenSans'
     }
   },
+    // ДАТА В ФИОЛЕТОВОМ БАБЛЕ
+    h('div', {
+      style: {
+        position: 'absolute',
+        left: '0px',
+        top: '272px',
+        width: '1280px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
+    },
+      h('span', {
+        style: {
+          fontSize: '26px',
+          fontWeight: 'bold',
+          fontFamily: 'OpenSans',
+          color: '#ffffff',
+          letterSpacing: '0.5px'
+        }
+      }, dateStrTitleCase)
+    ),
+
     // Колонка 1
     h('div', {
       style: {
         position: 'absolute',
-        left: '140px',
-        top: '380px',
-        width: '470px',
+        left: '135px',
+        top: '375px',
+        width: '485px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '26px'
+        gap: '24px'
       }
     },
       ...col1.map(m => renderSlottCard(m))
@@ -807,12 +878,12 @@ function createSlottLayout(matches, bgDataUrl) {
     h('div', {
       style: {
         position: 'absolute',
-        left: '670px',
-        top: '380px',
-        width: '470px',
+        left: '660px',
+        top: '375px',
+        width: '485px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '26px'
+        gap: '24px'
       }
     },
       ...col2.map(m => renderSlottCard(m))
@@ -828,22 +899,24 @@ function renderSlottCard(m) {
       width: '100%',
       borderRadius: '16px',
       overflow: 'hidden',
-      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)'
+      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+      fontFamily: 'OpenSans'
     }
   },
-    // Верхняя часть (светлое матовое стекло)
+    // Верхняя часть (светло-голубое матовое стекло)
     h('div', {
       style: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: 'rgba(215, 230, 255, 0.9)', // Светло-голубой Slott
+        backgroundColor: 'rgba(215, 230, 255, 0.92)',
         borderTopLeftRadius: '16px',
         borderTopRightRadius: '16px',
-        padding: '12px 18px'
+        padding: '10px 16px',
+        height: '90px'
       }
     },
-      // Команды в 2 строки без логотипов
+      // Команды в 2 строки
       h('div', {
         style: {
           display: 'flex',
@@ -853,24 +926,37 @@ function renderSlottCard(m) {
           flex: 1
         }
       },
-        h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1),
-        h('span', { style: { fontSize: '18px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
+        h('span', { style: { fontSize: '20px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1),
+        h('span', { style: { fontSize: '20px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
       ),
 
-      // Время справа вертикальным бейджем
+      // ВРЕМЯ ПОВЕРНУТОЕ НА 90 ГРАДУСОВ В ВЕРТИКАЛЬНОМ БЕЙДЖЕ
       h('div', {
         style: {
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          color: '#1e293b',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          padding: '4px 8px',
-          borderRadius: '8px'
+          width: '42px',
+          height: '76px',
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
         }
-      }, m.time)
+      },
+        h('span', {
+          style: {
+            transform: 'rotate(90deg)',
+            fontSize: '17px',
+            fontWeight: 'bold',
+            color: '#1e293b',
+            whiteSpace: 'nowrap',
+            fontFamily: 'OpenSans'
+          }
+        }, m.time)
+      )
     ),
 
-    // Нижняя плашка кэфов (градиент Slott)
+    // Нижняя градиентная плашка кэфов Slott
     h('div', {
       style: {
         display: 'flex',
@@ -881,8 +967,9 @@ function renderSlottCard(m) {
         borderBottomLeftRadius: '16px',
         borderBottomRightRadius: '16px',
         padding: '6px 12px',
-        fontSize: '20px',
-        fontWeight: 'bold'
+        fontSize: '22px',
+        fontWeight: 'bold',
+        fontFamily: 'OpenSans'
       }
     },
       h('span', null, m.p1),
@@ -895,7 +982,7 @@ function renderSlottCard(m) {
 }
 
 // -------------------------------------------------------------
-// КЭШ И ЗАГРУЗКА ИЗОБРАЖЕНИЙ
+// КЭШ И ЛОГОТИПЫ (ТРОЙНОЙ ПОИСК ПО ВИКИПЕДИИ)
 // -------------------------------------------------------------
 
 async function getCachedBg(url) {
@@ -913,7 +1000,6 @@ async function getCachedBg(url) {
   }
 }
 
-// Тройной поиск по Википедии (Commons -> RuWiki -> EnWiki, как в твоем плагине)
 async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
   const cacheKey = String(teamName).toLowerCase().trim();
   if (logoMemoryCache.has(cacheKey)) return logoMemoryCache.get(cacheKey);
