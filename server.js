@@ -7,7 +7,7 @@ import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Универсальная загрузка шрифтов
+// Загрузка всех фирменных шрифтов из корня или папки fonts
 function loadFont(fileName) {
   const inRoot = path.join(__dirname, fileName);
   const inFolder = path.join(__dirname, 'fonts', fileName);
@@ -31,7 +31,7 @@ const ALL_FONTS = [
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "ВАШ_ТОКЕН_БОТА";
 const PORT = process.env.PORT || 3000;
 
-// Все 12 подложек
+// 12 подложек
 const BACKGROUNDS = {
   twin: {
     uel: 'https://i.postimg.cc/brWTqPVn/ueltwin.jpg',
@@ -76,15 +76,15 @@ const TOP_EUROPE_LEAGUES = [
 const LOGO_MAP = {
   // ЕВРОКУБКИ
   "сабах баку": "Sabah_FC_(Azerbaijan).png", "сабах": "Sabah_FC_(Azerbaijan).png",
-  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "буде-глимт": "FK_Bodø-Glimt_Logo.svg",
-  "буде глимт": "FK_Bodø-Glimt_Logo.svg", "нек": "NEC_Nijmegen_logo.svg",
-  "ласк": "LASK-Logo_2023.svg", "селтик": "Celtic_FC_crest.svg",
-  "аек афины": "AEK_Athens_FC_logo.svg", "аек": "AEK_Athens_FC_logo.svg",
-  "викинг": "Viking_FK_logo.svg", "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg",
-  "слован братислава": "SK_Slovan_Bratislava_logo.svg", "слован": "SK_Slovan_Bratislava_logo.svg",
-  "галатасарай": "Galatasaray_Sports_Club_Logo.svg", "янг бойз": "BSC_Young_Boys_logo.svg",
-  "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
-  "спарта прага": "AC_Sparta_Prague_logo.svg", "спарта": "AC_Sparta_Prague_logo.svg",
+  "хапоэль беэр-шева": "Hapoel_Beer_Sheva.png", "хапоэль беэр шева": "Hapoel_Beer_Sheva.png",
+  "буде-глимт": "Bodo-Glimt.png", "буде глимт": "FK_Bodø-Glimt_Logo.svg",
+  "нек": "NEC_Nijmegen_logo.svg", "ласк": "LASK-Logo_2023.svg",
+  "селтик": "Celtic_FC_crest.svg", "аек афины": "AEK_Athens_FC_logo.svg",
+  "аек": "AEK_Athens_FC_logo.svg", "викинг": "Viking_FK_logo.svg",
+  "динамо загреб": "GNK_Dinamo_Zagreb_logo.svg", "слован братислава": "SK_Slovan_Bratislava_logo.svg",
+  "слован": "SK_Slovan_Bratislava_logo.svg", "галатасарай": "Galatasaray_Sports_Club_Logo.svg",
+  "янг бойз": "BSC_Young_Boys_logo.svg", "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
+  "зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "спарта прага": "AC_Sparta_Prague_logo.svg",
   "мальме": "Malmö_FF_logo.svg", "црвена звезда": "FK_Crvena_zvezda_logo.svg",
   "бешикташ": "Besiktas_JK.svg", "орхус": "Aarhus_Gymnastikforening_logo.svg",
   "бенфика": "SL_Benfica_logo.svg", "лех познань": "Lech_Poznań_logo.svg",
@@ -99,29 +99,27 @@ const LOGO_MAP = {
 
   // РПЛ
   "акрон": "FC_Akron_Logo_2023.svg", "родина": "FC_Rodina_Logo.svg",
-  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "махачкала": "FC_Dynamo_Makhachkala_Logo.svg",
-  "зенит": "FC_Zenit_logo_2023.svg", "спартак москва": "FC_Spartak_Moscow_Logo.svg",
-  "спартак": "FC_Spartak_Moscow_Logo.svg", "цска москва": "FC_CSKA_Moscow_Logo.svg",
-  "цска": "FC_CSKA_Moscow_Logo.svg", "краснодар": "FC_Krasnodar_Logo.svg",
-  "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg", "локомотив": "FC_Lokomotiv_Moscow_Logo.svg",
-  "динамо москва": "FC_Dynamo_Moscow_Logo.svg", "динамо м": "FC_Dynamo_Moscow_Logo.svg",
+  "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "зенит": "FC_Zenit_logo_2023.svg",
+  "спартак москва": "FC_Spartak_Moscow_Logo.svg", "спартак": "FC_Spartak_Moscow_Logo.svg",
+  "цска москва": "FC_CSKA_Moscow_Logo.svg", "цска": "FC_CSKA_Moscow_Logo.svg",
+  "краснодар": "FC_Krasnodar_Logo.svg", "локомотив москва": "FC_Lokomotiv_Moscow_Logo.svg",
+  "локомотив": "FC_Lokomotiv_Moscow_Logo.svg", "динамо москва": "FC_Dynamo_Moscow_Logo.svg",
   "ростов": "Rostov.svg", "факел": "Fakel_Voronezh_logo.svg", "оренбург": "FC_Orenburg_logo.svg",
   "ахмат": "FC_Akhmat_Grozny_Logo.svg", "рубин": "FC_Rubin_Kazan_logo.svg",
-  "крылья советов": "FC_Krylia_Sovetov_Logo.svg", "крылья": "FC_Krylia_Sovetov_Logo.svg",
-  "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg", "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg",
-  "химки": "FC_Khimki_Logo.svg", "балтика": "FC_Baltika_Kaliningrad_logo.png",
+  "крылья советов": "FC_Krylia_Sovetov_Logo.svg", "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg",
+  "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg", "химки": "FC_Khimki_Logo.svg",
+  "балтика": "FC_Baltika_Kaliningrad_logo.png",
 
   // ТОП ЕВРОПА
   "псж": "Paris_Saint-Germain_F.C..svg", "psg": "Paris_Saint-Germain_F.C..svg",
-  "пари сен-жермен": "Paris_Saint-Germain_F.C..svg", "марсель": "Olympique_de_Marseille_logo.svg",
-  "монако": "AS_Monaco_FC_logo.svg", "лион": "Olympique_Lyonnais_logo.svg",
+  "марсель": "Olympique_de_Marseille_logo.svg", "монако": "AS_Monaco_FC_logo.svg",
+  "лион": "Olympique_Lyonnais_logo.svg", "страсбур": "Racing_Club_de_Strasbourg_Alsace_logo.svg",
   "арсенал": "Arsenal_FC.svg", "челси": "FC_Chelsea_Logo.svg",
   "ливерпуль": "FC_Liverpool_Logo.svg", "liverpool": "FC_Liverpool_Logo.svg",
   "манчестер сити": "Manchester_City_FC.svg", "ман сити": "Manchester_City_FC.svg",
-  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "ман юнайтед": "Manchester_United_FC_crest.svg",
-  "тоттенхэм": "Tottenham_Hotspur.svg", "астон вилла": "Aston_Villa_FC_new_crest.svg",
-  "ньюкасл": "Newcastle_United_Logo.svg", "борнмут": "AFC_Bournemouth_%282013%29.svg",
-  "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg", "ноттингем": "Nottingham_Forest_logo.svg",
+  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "тоттенхэм": "Tottenham_Hotspur.svg",
+  "астон вилла": "Aston_Villa_FC_new_crest.svg", "ньюкасл": "Newcastle_United_Logo.svg",
+  "борнмут": "AFC_Bournemouth_%282013%29.svg", "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
   "брентфорд": "Brentford_FC_crest.svg", "эвертон": "Everton_FC_logo.svg",
   "реал мадрид": "FC_Real_Madrid_Logo.svg", "реал": "FC_Real_Madrid_Logo.svg",
   "барселона": "FC_Barcelona.svg", "атлетико": "FC_Atletico_Madrid_Logo.svg",
@@ -131,9 +129,8 @@ const LOGO_MAP = {
   "наполи": "SSC_Napoli_2025_(white_and_azure).svg", "рома": "AS_Roma_logo_%282017%29.svg",
   "бавария": "FC_Bayern_München_logo_%282017%29.svg", "боруссия дортмунд": "Borussia_Dortmund_logo.svg",
   "байер": "Bayer_04_Leverkusen_logo.svg", "штутгарт": "VfB_Stuttgart_1893_Logo.svg",
-  "вердер": "SV_Werder_Bremen_logo.svg", "вердер бремен": "SV_Werder_Bremen_logo.svg",
-  "падерборн": "SC_Paderborn_07_logo.svg", "комо": "Como_1907_logo.svg",
-  "фейеноорд": "Feyenoord_logo.svg"
+  "вердер": "SV_Werder_Bremen_logo.svg", "падерборн": "SC_Paderborn_07_logo.svg",
+  "комо": "Como_1907_logo.svg", "фейеноорд": "Feyenoord_logo.svg"
 };
 
 const bgMemoryCache = new Map();
@@ -295,7 +292,7 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   }
 }
 
-// ГЕНЕРАЦИЯ ПО ТЕКСТУ: никогда не падает с ошибкой, создает постер в любом случае!
+// ГЕНЕРАЦИЯ ПО ТЕКСТУ: собирает постер ВСЕГДА (даже если матчей нет в линии БК)
 async function handleCustomTextMatches(token, chatId, brand, text) {
   let statusMsgId = null;
 
@@ -303,12 +300,10 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
     const initRes = await sendMessage(token, chatId, `⏳ Обрабатываю ваш список матчей...`);
     statusMsgId = initRes?.result?.message_id;
 
-    // Для Slott берем до 8 матчей, для Twin/Leon до 4
     const maxMatches = brand === 'slott' ? 8 : 4;
     const lines = text.split('\n').map(l => l.trim()).filter(Boolean).slice(0, maxMatches);
     if (lines.length === 0) return;
 
-    // Пытаемся найти реальные данные в линии
     let allSoccerEvents = [];
     try {
       allSoccerEvents = await fetchAllActiveSoccer();
@@ -324,12 +319,12 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
       const userT1 = parts[0].trim();
       const userT2 = parts[1].trim();
 
-      // 1. Ищем в линии
+      // 1. Ищем в линии БК
       const foundEvent = findEventByTeams(allSoccerEvents, userT1, userT2);
       if (foundEvent) {
         matchedList.push(foundEvent);
       } else {
-        // 2. Если в линии нет — создаем карточку со стандартными кэфами (постер все равно соберется!)
+        // 2. Если матча нет в линии — не выбиваем ошибку, а создаем матч с базовыми кэфами
         const h = 20 + Math.floor(defaultTimeMinutes / 60);
         const m = (defaultTimeMinutes % 60) === 0 ? "00" : "30";
         defaultTimeMinutes += 30;
@@ -409,7 +404,6 @@ function cleanTeamName(name) {
     .trim();
 }
 
-// Приведение строки к красивому регистру для Slott (Ливерпуль, Манчестер Сити, ПСЖ)
 function toTitleCase(str) {
   return str.toLowerCase().replace(/(^|\s|-)([a-zа-я])/g, (m, p1, p2) => p1 + p2.toUpperCase())
     .replace(/\b(пфк|фк|хк|fc|pfc|cska|цска|псж|псв|купс|ласк|паок|аек|рпл|апл)\b/gi, m => m.toUpperCase());
@@ -512,7 +506,7 @@ async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
   }
 
   const list = [];
-  const seenTeams = new Set(); // Исключает дубли команд
+  const seenTeams = new Set();
 
   for (const ev of rawEvents) {
     if (!ev.competitors || ev.competitors.length < 2) continue;
@@ -589,7 +583,7 @@ async function renderPosterByBrand(brand, tourKey, matches) {
   return resvg.render().asPng();
 }
 
-// 1. ДИЗАЙН TWIN (шрифт Benzin)
+// 1. TWIN (шрифт Benzin, плашка времени строго НАД карточкой)
 function createTwinLayout(matches, bgDataUrl) {
   return h('div', {
     style: {
@@ -627,7 +621,6 @@ function renderTwinCard(m) {
       width: '640px'
     }
   },
-    // Плашка времени строго НАД карточкой
     h('div', {
       style: {
         position: 'absolute',
@@ -643,7 +636,6 @@ function renderTwinCard(m) {
       }
     }, m.time),
 
-    // Верхняя тёмная часть
     h('div', {
       style: {
         display: 'flex',
@@ -675,7 +667,6 @@ function renderTwinCard(m) {
       )
     ),
 
-    // Нижняя белая плашка кэфов (360px)
     h('div', {
       style: {
         display: 'flex',
@@ -700,12 +691,18 @@ function renderTwinCard(m) {
   );
 }
 
-// 2. ДИЗАЙН LEON (шрифт DIN Pro, дата в шапке, красная полоса кэфов)
+// 2. LEON (шрифт DIN Pro, выравнивание даты после палки, красная полоса)
 function createLeonLayout(tourKey, matches, bgDataUrl, firstTimestamp) {
   const isGames = tourKey === 'games' || tourKey === 'gamesars';
   const leftPos = isGames ? '650px' : '80px';
   const topPos = isGames ? '160px' : '450px';
   const dateStrUpper = getRussianDateUpper(firstTimestamp);
+
+  // Вычисляем отступ даты слева в зависимости от длины заголовка
+  let dateLeft = '275px';
+  if (tourKey === 'ucl' || isGames) {
+    dateLeft = '355px'; // Для длинного "МАТЧИ ДНЯ |"
+  }
 
   return h('div', {
     style: {
@@ -718,12 +715,12 @@ function createLeonLayout(tourKey, matches, bgDataUrl, firstTimestamp) {
       fontFamily: 'DINPro'
     }
   },
-    // ДАТА ПОСЛЕ ПАЙПА: РОССИЯ | 18 ОКТЯБРЯ / ЕВРОПА | 18 ОКТЯБРЯ
+    // ДАТА ПОСЛЕ ПАЙПА
     h('div', {
       style: {
         display: 'flex',
         position: 'absolute',
-        left: '290px',
+        left: dateLeft,
         top: '80px',
         alignItems: 'center'
       }
@@ -843,7 +840,7 @@ function renderLeonCard(m) {
   );
 }
 
-// 3. ДИЗАЙН SLOTT (шрифт OpenSans, дата ровно в бабле, время повернуто на 90 градусов)
+// 3. SLOTT (шрифт OpenSans, дата ТОЧНО в фиолетовом бабле, чистое время без обводки)
 function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
   const col1 = matches.slice(0, 4);
   const col2 = matches.slice(4, 8);
@@ -860,13 +857,13 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
       fontFamily: 'OpenSans'
     }
   },
-    // ДАТА РОВНО ВНУТРИ ФИОЛЕТОВОГО БАБЛА (top: 332px)
+    // ДАТА СТРОГО ВНУТРИ ФИОЛЕТОВОГО БАБЛА (top: 260px)
     h('div', {
       style: {
         display: 'flex',
         position: 'absolute',
         left: '0px',
-        top: '332px',
+        top: '260px',
         width: '1280px',
         justifyContent: 'center',
         alignItems: 'center'
@@ -888,11 +885,11 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
       style: {
         position: 'absolute',
         left: '110px',
-        top: '400px',
+        top: '360px',
         width: '510px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px'
+        gap: '22px'
       }
     },
       ...col1.map(m => renderSlottCard(m))
@@ -903,11 +900,11 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
       style: {
         position: 'absolute',
         left: '660px',
-        top: '400px',
+        top: '360px',
         width: '510px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px'
+        gap: '22px'
       }
     },
       ...col2.map(m => renderSlottCard(m))
@@ -921,20 +918,20 @@ function renderSlottCard(m) {
       display: 'flex',
       flexDirection: 'column',
       width: '100%',
-      borderRadius: '18px',
+      borderRadius: '16px',
       overflow: 'hidden',
       fontFamily: 'OpenSans'
     }
   },
-    // Верхняя часть (светлое матовое стекло, названия в 2 строки не капсом)
+    // Верхняя часть (матовое стекло, названия TitleCase)
     h('div', {
       style: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'rgba(215, 230, 255, 0.95)',
-        borderTopLeftRadius: '18px',
-        borderTopRightRadius: '18px',
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px',
         padding: '12px 18px',
         height: '92px'
       }
@@ -952,23 +949,20 @@ function renderSlottCard(m) {
         h('span', { style: { fontSize: '21px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, toTitleCase(m.team2))
       ),
 
-      // Время в вертикальном бейдже, повернутое на 90 градусов
+      // ВРЕМЯ БЕЗ ОБВОДКИ (чистый повернутый текст 90 градусов)
       h('div', {
         style: {
-          width: '44px',
-          height: '76px',
-          backgroundColor: 'rgba(180, 205, 245, 0.65)',
-          borderRadius: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          overflow: 'hidden'
+          width: '50px',
+          height: '100%'
         }
       },
         h('span', {
           style: {
             transform: 'rotate(90deg)',
-            fontSize: '17px',
+            fontSize: '18px',
             fontWeight: 'bold',
             color: '#1e293b',
             whiteSpace: 'nowrap',
@@ -986,9 +980,9 @@ function renderSlottCard(m) {
         alignItems: 'center',
         background: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
         color: '#ffffff',
-        borderBottomLeftRadius: '18px',
-        borderBottomRightRadius: '18px',
-        padding: '8px 16px',
+        borderBottomLeftRadius: '16px',
+        borderBottomRightRadius: '16px',
+        padding: '7px 16px',
         fontSize: '22px',
         fontWeight: 'bold',
         fontFamily: 'OpenSans'
@@ -1042,7 +1036,7 @@ async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
     }
   }
 
-  // Тройной поиск по Википедии (Commons -> RuWiki -> EnWiki)
+  // 1. Поиск по Википедии (Commons -> RuWiki -> EnWiki)
   if (fileName) {
     const safeName = encodeURIComponent(fileName);
     const endpoints = [
@@ -1068,6 +1062,7 @@ async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
     }
   }
 
+  // 2. Фоллбэк на сайт букмекера
   if (bookmakerLogoUrl) {
     try {
       let finalFbUrl = bookmakerLogoUrl.startsWith('/') ? `https://4278.info${bookmakerLogoUrl}` : bookmakerLogoUrl;
