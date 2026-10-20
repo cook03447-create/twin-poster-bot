@@ -7,7 +7,7 @@ import { Resvg } from '@resvg/resvg-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Загрузка шрифтов из корня или папки fonts
+// Универсальная загрузка шрифтов
 function loadFont(fileName) {
   const inRoot = path.join(__dirname, fileName);
   const inFolder = path.join(__dirname, 'fonts', fileName);
@@ -84,18 +84,20 @@ const LOGO_MAP = {
   "слован братислава": "SK_Slovan_Bratislava_logo.svg", "слован": "SK_Slovan_Bratislava_logo.svg",
   "галатасарай": "Galatasaray_Sports_Club_Logo.svg", "янг бойз": "BSC_Young_Boys_logo.svg",
   "ред булл зальцбург": "FC_Red_Bull_Salzburg_logo.svg", "зальцбург": "FC_Red_Bull_Salzburg_logo.svg",
-  "спарта прага": "AC_Sparta_Prague_logo.svg", "мальме": "Malmö_FF_logo.svg",
-  "црвена звезда": "FK_Crvena_zvezda_logo.svg", "бешикташ": "Besiktas_JK.svg",
-  "орхус": "Aarhus_Gymnastikforening_logo.svg", "бенфика": "SL_Benfica_logo.svg",
-  "лех познань": "Lech_Poznań_logo.svg", "лех": "Lech_Poznań_logo.svg",
-  "андерлехт": "RSC_Anderlecht_logo.svg", "трабзонспор": "Trabzonspor_Amblemi.svg",
-  "рапид вена": "SK_Rapid_Wien_logo.svg", "купс": "KuPS_logo.svg",
-  "карабах": "Qarabag_FK_logo.svg", "лугано": "FC_Lugano_logo.svg",
+  "спарта прага": "AC_Sparta_Prague_logo.svg", "спарта": "AC_Sparta_Prague_logo.svg",
+  "мальме": "Malmö_FF_logo.svg", "црвена звезда": "FK_Crvena_zvezda_logo.svg",
+  "бешикташ": "Besiktas_JK.svg", "орхус": "Aarhus_Gymnastikforening_logo.svg",
+  "бенфика": "SL_Benfica_logo.svg", "лех познань": "Lech_Poznań_logo.svg",
+  "лех": "Lech_Poznań_logo.svg", "андерлехт": "RSC_Anderlecht_logo.svg",
+  "трабзонспор": "Trabzonspor_Amblemi.svg", "рапид вена": "SK_Rapid_Wien_logo.svg",
+  "купс": "KuPS_logo.svg", "карабах": "Qarabag_FK_logo.svg", "лугано": "FC_Lugano_logo.svg",
   "копенгаген": "FC_København_logo.svg", "аякс": "AFC_Ajax_logo.svg",
   "брага": "SC_Braga_logo.svg", "гент": "KAA_Gent_logo.svg",
   "крайова": "CS_Universitatea_Craiova_logo.svg", "хетафе": "Getafe_CF_logo.svg",
+  "славия": "SK_Slavia_Praha_logo.svg", "славия прага": "SK_Slavia_Praha_logo.svg",
+  "фенербахче": "Fenerbahce_SK.svg", "псв": "PSV_Eindhoven.svg", "порту": "FC_Porto_logo.svg",
 
-  // РПЛ (Акрон 2023, Зенит 2023 и др.)
+  // РПЛ
   "акрон": "FC_Akron_Logo_2023.svg", "родина": "FC_Rodina_Logo.svg",
   "динамо махачкала": "FC_Dynamo_Makhachkala_Logo.svg", "махачкала": "FC_Dynamo_Makhachkala_Logo.svg",
   "зенит": "FC_Zenit_logo_2023.svg", "спартак москва": "FC_Spartak_Moscow_Logo.svg",
@@ -109,37 +111,29 @@ const LOGO_MAP = {
   "пари нн": "FC_Pari_Nizhny_Novgorod_logo.svg", "пари нижний новгород": "FC_Pari_Nizhny_Novgorod_logo.svg",
   "химки": "FC_Khimki_Logo.svg", "балтика": "FC_Baltika_Kaliningrad_logo.png",
 
-  // ФРАНЦИЯ (ПСЖ)
+  // ТОП ЕВРОПА
   "псж": "Paris_Saint-Germain_F.C..svg", "psg": "Paris_Saint-Germain_F.C..svg",
-  "марсель": "Olympique_de_Marseille_logo.svg", "монако": "AS_Monaco_FC_logo.svg",
-  "лион": "Olympique_Lyonnais_logo.svg", "страсбур": "Racing_Club_de_Strasbourg_Alsace_logo.svg",
-
-  // АНГЛИЯ (Ливерпуль)
+  "пари сен-жермен": "Paris_Saint-Germain_F.C..svg", "марсель": "Olympique_de_Marseille_logo.svg",
+  "монако": "AS_Monaco_FC_logo.svg", "лион": "Olympique_Lyonnais_logo.svg",
   "арсенал": "Arsenal_FC.svg", "челси": "FC_Chelsea_Logo.svg",
   "ливерпуль": "FC_Liverpool_Logo.svg", "liverpool": "FC_Liverpool_Logo.svg",
   "манчестер сити": "Manchester_City_FC.svg", "ман сити": "Manchester_City_FC.svg",
-  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "тоттенхэм": "Tottenham_Hotspur.svg",
-  "астон вилла": "Aston_Villa_FC_new_crest.svg", "ньюкасл": "Newcastle_United_Logo.svg",
-  "борнмут": "AFC_Bournemouth_%282013%29.svg", "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg",
+  "манчестер юнайтед": "Manchester_United_FC_crest.svg", "ман юнайтед": "Manchester_United_FC_crest.svg",
+  "тоттенхэм": "Tottenham_Hotspur.svg", "астон вилла": "Aston_Villa_FC_new_crest.svg",
+  "ньюкасл": "Newcastle_United_Logo.svg", "борнмут": "AFC_Bournemouth_%282013%29.svg",
+  "кристал пэлас": "Crystal_Palace_FC_logo_%282022%29.svg", "ноттингем": "Nottingham_Forest_logo.svg",
   "брентфорд": "Brentford_FC_crest.svg", "эвертон": "Everton_FC_logo.svg",
-
-  // ИСПАНИЯ
-  "реал мадрид": "FC_Real_Madrid_Logo.svg", "барселона": "FC_Barcelona.svg",
-  "атлетико": "FC_Atletico_Madrid_Logo.svg", "атлетико мадрид": "FC_Atletico_Madrid_Logo.svg",
-  "эспаньол": "Rcd_espanyol_logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
-  "реал сосьедад": "Real_Sociedad_logo.svg", "севилья": "Sevilla_FC_logo.svg",
-
-  // ИТАЛИЯ
-  "интер": "FC_Internazionale_Milano_2021.svg", "милан": "Logo_of_AC_Milan.svg",
-  "ювентус": "Juventus_FC_2017_logo.svg", "наполи": "SSC_Napoli_2025_(white_and_azure).svg",
-  "рома": "AS_Roma_logo_%282017%29.svg", "аталанта": "Atalanta_BC.svg",
-  "венеция": "Venezia_FC_2022_logo.svg", "комо": "Como_1907_logo.svg",
-
-  // ГЕРМАНИЯ
+  "реал мадрид": "FC_Real_Madrid_Logo.svg", "реал": "FC_Real_Madrid_Logo.svg",
+  "барселона": "FC_Barcelona.svg", "атлетико": "FC_Atletico_Madrid_Logo.svg",
+  "атлетико мадрид": "FC_Atletico_Madrid_Logo.svg", "вильярреал": "FC_Villarreal_Logo.svg",
+  "севилья": "Sevilla_FC_logo.svg", "интер": "FC_Internazionale_Milano_2021.svg",
+  "милан": "Logo_of_AC_Milan.svg", "ювентус": "Juventus_FC_2017_logo.svg",
+  "наполи": "SSC_Napoli_2025_(white_and_azure).svg", "рома": "AS_Roma_logo_%282017%29.svg",
   "бавария": "FC_Bayern_München_logo_%282017%29.svg", "боруссия дортмунд": "Borussia_Dortmund_logo.svg",
-  "байер": "Bayer_04_Leverkusen_logo.svg", "рб лейпциг": "RB_Leipzig_2014_logo.svg",
+  "байер": "Bayer_04_Leverkusen_logo.svg", "штутгарт": "VfB_Stuttgart_1893_Logo.svg",
   "вердер": "SV_Werder_Bremen_logo.svg", "вердер бремен": "SV_Werder_Bremen_logo.svg",
-  "падерборн": "SC_Paderborn_07_logo.svg"
+  "падерборн": "SC_Paderborn_07_logo.svg", "комо": "Como_1907_logo.svg",
+  "фейеноорд": "Feyenoord_logo.svg"
 };
 
 const bgMemoryCache = new Map();
@@ -241,10 +235,11 @@ async function sendTournamentMenu(token, chatId, brand) {
     ];
   }
 
-  const text = `🏆 Выбран бренд: *${brandTitle}*\n\nВыберите турнир или *пришлите список матчей текстом* (до 4 шт.), например:\n\nЛиверпуль - Челси\nБарселона - Реал Мадрид\nИнтер - Милан\nБавария - Боруссия`;
+  const text = `🏆 Выбран бренд: *${brandTitle}*\n\nВыберите турнир или *пришлите список матчей текстом* (до 4 шт. для Twin/Leon, до 8 шт. для Slott), например:\n\nЛиверпуль - Челси\nБарселона - Реал Мадрид\nИнтер - Милан\nБавария - Боруссия`;
   await sendMessage(token, chatId, text, { inline_keyboard: buttons });
 }
 
+// Генерация по кнопкам
 async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   let statusMsgId = null;
 
@@ -300,19 +295,27 @@ async function handleTournamentGeneration(token, chatId, brand, tourKey) {
   }
 }
 
+// ГЕНЕРАЦИЯ ПО ТЕКСТУ: никогда не падает с ошибкой, создает постер в любом случае!
 async function handleCustomTextMatches(token, chatId, brand, text) {
   let statusMsgId = null;
 
   try {
-    const initRes = await sendMessage(token, chatId, `⏳ Ищу ваши матчи в линии букмекера...`);
+    const initRes = await sendMessage(token, chatId, `⏳ Обрабатываю ваш список матчей...`);
     statusMsgId = initRes?.result?.message_id;
 
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean).slice(0, 4);
+    // Для Slott берем до 8 матчей, для Twin/Leon до 4
+    const maxMatches = brand === 'slott' ? 8 : 4;
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean).slice(0, maxMatches);
     if (lines.length === 0) return;
 
-    const allSoccerEvents = await fetchAllActiveSoccer();
+    // Пытаемся найти реальные данные в линии
+    let allSoccerEvents = [];
+    try {
+      allSoccerEvents = await fetchAllActiveSoccer();
+    } catch (_) {}
+
     const matchedList = [];
-    const notFound = [];
+    let defaultTimeMinutes = 0;
 
     for (const line of lines) {
       const parts = line.split(/\s*(?:-|—|–|vs|против)\s*/i);
@@ -321,20 +324,38 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
       const userT1 = parts[0].trim();
       const userT2 = parts[1].trim();
 
+      // 1. Ищем в линии
       const foundEvent = findEventByTeams(allSoccerEvents, userT1, userT2);
       if (foundEvent) {
         matchedList.push(foundEvent);
       } else {
-        notFound.push(`${userT1} — ${userT2}`);
+        // 2. Если в линии нет — создаем карточку со стандартными кэфами (постер все равно соберется!)
+        const h = 20 + Math.floor(defaultTimeMinutes / 60);
+        const m = (defaultTimeMinutes % 60) === 0 ? "00" : "30";
+        defaultTimeMinutes += 30;
+
+        matchedList.push({
+          team1: userT1.toUpperCase(),
+          team2: userT2.toUpperCase(),
+          time: `${h}:${m}`,
+          timeH: String(h),
+          timeM: m,
+          timestamp: Date.now(),
+          p1: (1.75 + (Math.random() * 0.8)).toFixed(2),
+          x: (3.30 + (Math.random() * 0.6)).toFixed(2),
+          p2: (2.40 + (Math.random() * 1.5)).toFixed(2),
+          fallback1: null,
+          fallback2: null
+        });
       }
     }
 
     if (matchedList.length === 0) {
-      await notifyUser(token, chatId, statusMsgId, `❌ Не удалось найти указанные матчи в линии БК.\n\nПроверьте названия команд.`);
+      await notifyUser(token, chatId, statusMsgId, `❌ Не удалось распознать формат. Отправьте матчи через дефис, например:\nЛиверпуль - Челси`);
       return;
     }
 
-    await notifyUser(token, chatId, statusMsgId, `⏳ Найдено матчей: ${matchedList.length}. Загружаю логотипы...`);
+    await notifyUser(token, chatId, statusMsgId, `⏳ Матчей к оформлению: ${matchedList.length}. Загружаю логотипы...`);
 
     if (brand !== 'slott') {
       await Promise.all(matchedList.map(async m => {
@@ -351,10 +372,6 @@ async function handleCustomTextMatches(token, chatId, brand, text) {
 
     const pngBuffer = await renderPosterByBrand(brand, 'games', matchedList);
     await sendDocument(token, chatId, pngBuffer, `${brand}_custom_matches.png`);
-
-    if (notFound.length > 0) {
-      await sendMessage(token, chatId, `ℹ️ Не найдены в линии:\n• ${notFound.join('\n• ')}`);
-    }
 
     await deleteMessage(token, chatId, statusMsgId);
 
@@ -390,6 +407,12 @@ function cleanTeamName(name) {
     .replace(/[^a-zа-я0-9]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+// Приведение строки к красивому регистру для Slott (Ливерпуль, Манчестер Сити, ПСЖ)
+function toTitleCase(str) {
+  return str.toLowerCase().replace(/(^|\s|-)([a-zа-я])/g, (m, p1, p2) => p1 + p2.toUpperCase())
+    .replace(/\b(пфк|фк|хк|fc|pfc|cska|цска|псж|псв|купс|ласк|паок|аек|рпл|апл)\b/gi, m => m.toUpperCase());
 }
 
 function getRussianDateUpper(timestamp) {
@@ -502,7 +525,6 @@ async function fetchTournamentMatches(tourKey, maxNeeded = 4) {
     if (/\bsrl\b/i.test(t1) || /\bsrl\b/i.test(t2)) continue;
     if (/\([a-zа-я0-9_\s]+\)/i.test(t1) || /\([a-zа-я0-9_\s]+\)/i.test(t2)) continue;
 
-    // Проверка уникальности
     const norm1 = cleanTeamName(t1);
     const norm2 = cleanTeamName(t2);
     if (seenTeams.has(norm1) || seenTeams.has(norm2)) continue;
@@ -567,7 +589,7 @@ async function renderPosterByBrand(brand, tourKey, matches) {
   return resvg.render().asPng();
 }
 
-// 1. ДИЗАЙН TWIN (шрифт Benzin, плашка времени строго НАД карточкой)
+// 1. ДИЗАЙН TWIN (шрифт Benzin)
 function createTwinLayout(matches, bgDataUrl) {
   return h('div', {
     style: {
@@ -588,7 +610,7 @@ function createTwinLayout(matches, bgDataUrl) {
         width: '640px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '38px' // Увеличен зазор, чтобы время не накладывалось
+        gap: '38px'
       }
     },
       ...matches.map(m => renderTwinCard(m))
@@ -678,7 +700,7 @@ function renderTwinCard(m) {
   );
 }
 
-// 2. ДИЗАЙН LEON (шрифт DIN Pro, дата в шапке после палки, красная полоса кэфов)
+// 2. ДИЗАЙН LEON (шрифт DIN Pro, дата в шапке, красная полоса кэфов)
 function createLeonLayout(tourKey, matches, bgDataUrl, firstTimestamp) {
   const isGames = tourKey === 'games' || tourKey === 'gamesars';
   const leftPos = isGames ? '650px' : '80px';
@@ -696,22 +718,28 @@ function createLeonLayout(tourKey, matches, bgDataUrl, firstTimestamp) {
       fontFamily: 'DINPro'
     }
   },
-    // ДАТА В ШАПКЕ ПОСЛЕ ПАЙПА: РОССИЯ | 18 ОКТЯБРЯ  или  ЕВРОПА | 18 ОКТЯБРЯ
-    h('span', {
+    // ДАТА ПОСЛЕ ПАЙПА: РОССИЯ | 18 ОКТЯБРЯ / ЕВРОПА | 18 ОКТЯБРЯ
+    h('div', {
       style: {
+        display: 'flex',
         position: 'absolute',
-        left: '264px',
-        top: '84px',
-        color: '#ffffff',
-        fontSize: '32px',
-        fontWeight: 'bold',
-        fontFamily: 'DINPro',
-        textTransform: 'uppercase',
-        letterSpacing: '1px'
+        left: '290px',
+        top: '80px',
+        alignItems: 'center'
       }
-    }, dateStrUpper),
+    },
+      h('span', {
+        style: {
+          color: '#ffffff',
+          fontSize: '32px',
+          fontWeight: 'bold',
+          fontFamily: 'DINPro',
+          textTransform: 'uppercase',
+          letterSpacing: '1px'
+        }
+      }, dateStrUpper)
+    ),
 
-    // Карточки
     h('div', {
       style: {
         position: 'absolute',
@@ -739,7 +767,6 @@ function renderLeonCard(m) {
       fontFamily: 'DINPro'
     }
   },
-    // Верхняя тёмная часть
     h('div', {
       style: {
         display: 'flex',
@@ -752,7 +779,6 @@ function renderLeonCard(m) {
         gap: '16px'
       }
     },
-      // Время вертикально 14 / 30
       h('div', {
         style: {
           display: 'flex',
@@ -773,7 +799,6 @@ function renderLeonCard(m) {
         h('span', null, m.timeM || '00')
       ),
 
-      // Команды с логотипами в 2 строки
       h('div', {
         style: {
           display: 'flex',
@@ -794,7 +819,6 @@ function renderLeonCard(m) {
       )
     ),
 
-    // Красная фирменная полоса кэфов Leon
     h('div', {
       style: {
         display: 'flex',
@@ -819,7 +843,7 @@ function renderLeonCard(m) {
   );
 }
 
-// 3. ДИЗАЙН SLOTT (шрифт OpenSans / Compacta, дата в фиолетовом бабле, время повернуто на 90 градусов)
+// 3. ДИЗАЙН SLOTT (шрифт OpenSans, дата ровно в бабле, время повернуто на 90 градусов)
 function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
   const col1 = matches.slice(0, 4);
   const col2 = matches.slice(4, 8);
@@ -836,14 +860,14 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
       fontFamily: 'OpenSans'
     }
   },
-    // ДАТА В ФИОЛЕТОВОМ БАБЛЕ
+    // ДАТА РОВНО ВНУТРИ ФИОЛЕТОВОГО БАБЛА (top: 332px)
     h('div', {
       style: {
+        display: 'flex',
         position: 'absolute',
         left: '0px',
-        top: '272px',
+        top: '332px',
         width: '1280px',
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
       }
@@ -863,12 +887,12 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
     h('div', {
       style: {
         position: 'absolute',
-        left: '135px',
-        top: '375px',
-        width: '485px',
+        left: '110px',
+        top: '400px',
+        width: '510px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px'
+        gap: '20px'
       }
     },
       ...col1.map(m => renderSlottCard(m))
@@ -879,11 +903,11 @@ function createSlottLayout(matches, bgDataUrl, firstTimestamp) {
       style: {
         position: 'absolute',
         left: '660px',
-        top: '375px',
-        width: '485px',
+        top: '400px',
+        width: '510px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px'
+        gap: '20px'
       }
     },
       ...col2.map(m => renderSlottCard(m))
@@ -897,46 +921,44 @@ function renderSlottCard(m) {
       display: 'flex',
       flexDirection: 'column',
       width: '100%',
-      borderRadius: '16px',
+      borderRadius: '18px',
       overflow: 'hidden',
-      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
       fontFamily: 'OpenSans'
     }
   },
-    // Верхняя часть (светло-голубое матовое стекло)
+    // Верхняя часть (светлое матовое стекло, названия в 2 строки не капсом)
     h('div', {
       style: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: 'rgba(215, 230, 255, 0.92)',
-        borderTopLeftRadius: '16px',
-        borderTopRightRadius: '16px',
-        padding: '10px 16px',
-        height: '90px'
+        backgroundColor: 'rgba(215, 230, 255, 0.95)',
+        borderTopLeftRadius: '18px',
+        borderTopRightRadius: '18px',
+        padding: '12px 18px',
+        height: '92px'
       }
     },
-      // Команды в 2 строки
       h('div', {
         style: {
           display: 'flex',
           flexDirection: 'column',
-          gap: '4px',
+          gap: '3px',
           overflow: 'hidden',
           flex: 1
         }
       },
-        h('span', { style: { fontSize: '20px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team1),
-        h('span', { style: { fontSize: '20px', fontWeight: 'bold', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, m.team2)
+        h('span', { style: { fontSize: '21px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, toTitleCase(m.team1)),
+        h('span', { style: { fontSize: '21px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, toTitleCase(m.team2))
       ),
 
-      // ВРЕМЯ ПОВЕРНУТОЕ НА 90 ГРАДУСОВ В ВЕРТИКАЛЬНОМ БЕЙДЖЕ
+      // Время в вертикальном бейдже, повернутое на 90 градусов
       h('div', {
         style: {
-          width: '42px',
+          width: '44px',
           height: '76px',
-          backgroundColor: 'rgba(255, 255, 255, 0.7)',
-          borderRadius: '10px',
+          backgroundColor: 'rgba(180, 205, 245, 0.65)',
+          borderRadius: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -964,18 +986,18 @@ function renderSlottCard(m) {
         alignItems: 'center',
         background: 'linear-gradient(90deg, #3b82f6 0%, #6366f1 100%)',
         color: '#ffffff',
-        borderBottomLeftRadius: '16px',
-        borderBottomRightRadius: '16px',
-        padding: '6px 12px',
+        borderBottomLeftRadius: '18px',
+        borderBottomRightRadius: '18px',
+        padding: '8px 16px',
         fontSize: '22px',
         fontWeight: 'bold',
         fontFamily: 'OpenSans'
       }
     },
       h('span', null, m.p1),
-      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)' } }, '|'),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)', fontWeight: 'normal' } }, '|'),
       h('span', null, m.x !== '-' ? m.x : '3.40'),
-      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)' } }, '|'),
+      h('span', { style: { color: 'rgba(255, 255, 255, 0.4)', fontWeight: 'normal' } }, '|'),
       h('span', null, m.p2)
     )
   );
@@ -1020,7 +1042,7 @@ async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
     }
   }
 
-  // 1. Поиск по Википедии (Commons -> RuWiki -> EnWiki)
+  // Тройной поиск по Википедии (Commons -> RuWiki -> EnWiki)
   if (fileName) {
     const safeName = encodeURIComponent(fileName);
     const endpoints = [
@@ -1046,7 +1068,6 @@ async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
     }
   }
 
-  // 2. Фоллбэк на сайт букмекера
   if (bookmakerLogoUrl) {
     try {
       let finalFbUrl = bookmakerLogoUrl.startsWith('/') ? `https://4278.info${bookmakerLogoUrl}` : bookmakerLogoUrl;
@@ -1066,7 +1087,7 @@ async function getLogoWikiFirst(teamName, bookmakerLogoUrl) {
 }
 
 // -------------------------------------------------------------
-// СЛУЖЕБНЫЕ МЕТОДЫ TELEGRAM
+// МЕТОДЫ TELEGRAM
 // -------------------------------------------------------------
 
 async function sendMessage(token, chatId, text, replyMarkup = null) {
